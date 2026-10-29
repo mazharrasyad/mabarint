@@ -9,11 +9,38 @@ import { useToast } from "@/components/toast";
 import type { Demo } from "@/lib/demo";
 
 const API = "/mabarint/api/annotate";
+const HISTORY_API = "/mabarint/api/history";
 const CODE_KEY = "mabarint.accessCode";
+const CLIENT_KEY = "mabarint.clientId";
 
 interface Config { enabled: boolean; requiresCode: boolean; maxChars: number; model: string }
 interface Step { stage: string; message: string; state: "active" | "done" }
 type Result = AnnotationResult & { text?: string };
+interface HistoryItem {
+  id: string;
+  time: string;
+  text: string;
+  status: "ok" | "refused" | "error";
+  error?: string;
+  profile?: Profile;
+  marks?: number;
+  ms?: number;
+  result?: Result;
+}
+
+/** A random id kept in this browser, so the server can list this visitor's own runs. */
+function browserId(): string {
+  try {
+    let id = localStorage.getItem(CLIENT_KEY);
+    if (!id) {
+      id = crypto.randomUUID();
+      localStorage.setItem(CLIENT_KEY, id);
+    }
+    return id;
+  } catch {
+    return "anonymous";
+  }
+}
 
 export function Playground({ presets }: { presets: Demo[] }) {
   const toast = useToast();
@@ -26,11 +53,35 @@ export function Playground({ presets }: { presets: Demo[] }) {
   const [source, setSource] = useState<"precomputed" | "live">("precomputed");
   const [tab, setTab] = useState<"rendered" | "json">("rendered");
   const startedAt = useRef(0);
+  const [clientId, setClientId] = useState("anonymous");
+  const [history, setHistory] = useState<HistoryItem[]>([]);
 
   useEffect(() => {
     fetch(API).then((r) => r.json()).then(setConfig).catch(() => setConfig({ enabled: false, requiresCode: false, maxChars: 1000, model: "" }));
     try { setCode(sessionStorage.getItem(CODE_KEY) ?? ""); } catch { /* storage blocked */ }
+    const id = browserId();
+    setClientId(id);
+    loadHistory(id);
   }, []);
+
+  function loadHistory(id = clientId) {
+    if (id === "anonymous") return;
+    fetch(`${HISTORY_API}?client=${encodeURIComponent(id)}`)
+      .then((r) => r.json())
+      .then((d) => setHistory(d.entries ?? []))
+      .catch(() => { /* history is a convenience; the playground still works */ });
+  }
+
+  function openHistory(h: HistoryItem) {
+    setText(h.text);
+    if (h.result) {
+      setResult({ ...h.result, text: h.result.text ?? h.text });
+      setSource("live");
+      setTab("rendered");
+    }
+    setSteps([]);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   const maxChars = config?.maxChars ?? 1000;
   const tooLong = text.length > maxChars;
@@ -65,7 +116,7 @@ export function Playground({ presets }: { presets: Demo[] }) {
       const res = await fetch(API, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "text/event-stream" },
-        body: JSON.stringify({ text, profile: "auto", code: code.trim() }),
+        body: JSON.stringify({ text, profile: "auto", code: code.trim(), clientId }),
       });
       if (!res.ok || !res.body) {
         const err = await res.json().catch(() => ({ error: `Request failed (${res.status})` }));
@@ -79,6 +130,7 @@ export function Playground({ presets }: { presets: Demo[] }) {
       toast({ kind: "error", title: errorTitle(err.code), body: err.message });
     } finally {
       setBusy(false);
+      loadHistory();
     }
   }
 
@@ -179,6 +231,36 @@ export function Playground({ presets }: { presets: Demo[] }) {
           <div className="card" style={{ marginTop: 16 }}><Legend /></div>
         </section>
       )}
+
+      <section className="section" style={{ marginTop: 28 }} aria-labelledby="history-title">
+        <h2 id="history-title">Your history</h2>
+        <p className="small muted">
+          Every time you click Annotate, the time and your text are saved on the server together with the result,
+          so you can come back to them. Only this browser can see its own list.
+        </p>
+        {history.length === 0 ? (
+          <p className="small muted">No runs yet. Your first Annotate will appear here.</p>
+        ) : (
+          <ul className="history">
+            {history.map((h) => (
+              <li key={h.id}>
+                <button type="button" onClick={() => openHistory(h)} disabled={busy || !h.result} title={h.result ? "Open this run" : undefined}>
+                  <span className="history-meta">
+                    <time dateTime={h.time}>{new Date(h.time).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}</time>
+                    <span className={`history-status ${h.status}`}>
+                      {h.status === "ok"
+                        ? `${h.profile ? TYPE_LABEL[h.profile] : "Done"} · ${h.marks ?? 0} marks`
+                        : h.status === "refused" ? "Refused" : errorTitle(h.error)}
+                    </span>
+                    {h.ms !== undefined && <span className="muted">{(h.ms / 1000).toFixed(1)}s</span>}
+                  </span>
+                  <span className="history-text">{h.text}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </IntensityProvider>
   );
 }

@@ -5,7 +5,7 @@ Stage directions are in Indonesian; the narration (voice-over) is in English for
 ## Persiapan sebelum rekam
 
 1. **Browser bersih:** gunakan jendela biasa (bukan incognito) di Chrome. Zoom 110–125% supaya teks terbaca di video. Sembunyikan bookmark bar.
-2. **Tutup popup Guide** sekali sebelum merekam, supaya tidak menghalangi di tengah video. Kalau ingin menampilkannya, buka lewat tombol **Guide**.
+2. **Tutup popup Guide** sekali sebelum merekam, supaya tidak menghalangi di tengah video. Popup ini selalu muncul setiap kali halaman home dibuka.
 3. **Siapkan 6 tab** sesuai urutan: `/mabarint/meanings`, `/mabarint/novel`, `/mabarint/news`, `/mabarint/playground`, `/mabarint/docs`, `/mabarint` (home).
 4. **Playground:** terbuka untuk umum, tanpa kode akses. Pilih profil **Novel** sebelum merekam.
 5. **Teks live:**

@@ -1,4 +1,5 @@
-import { createEngine, PROFILES, type ProgressEvent, type Profile } from "@mabarint/engine";
+import { createEngine, isRefusal, PROFILES, type AnnotationResult, type ProgressEvent, type Profile } from "@mabarint/engine";
+import { record, validClientId } from "@/lib/history";
 import { LIMITS, checkAccessCode, clientIp, takeQuota } from "@/lib/limits";
 
 export const runtime = "nodejs";
@@ -39,12 +40,35 @@ export async function POST(req: Request) {
   const context = typeof body?.context === "string" ? body.context.slice(0, LIMITS.maxChars) : "";
   if (!text) return fail(400, "bad_request", "Paste some text to annotate.");
   if (profile !== "auto" && !PROFILES.includes(profile)) return fail(400, "bad_request", `Profile must be auto or one of ${PROFILES.join(", ")}.`);
-  if (text.length > LIMITS.maxChars) return fail(413, "too_long", `Text is ${text.length} characters; the limit is ${LIMITS.maxChars}.`);
-  if (!checkAccessCode(body?.code)) return fail(401, "access_code", "That access code is not right.");
 
-  const quota = takeQuota(clientIp(req.headers));
+  // Every click on Annotate is saved with its time and text (see lib/history.ts).
+  const ip = clientIp(req.headers);
+  const clientId = validClientId(body?.clientId) ?? "anonymous";
+  const started = Date.now();
+  const saveError = (error: ErrorCode) =>
+    record({ ip, clientId, text: text.slice(0, LIMITS.maxChars), status: "error", error, ms: Date.now() - started });
+  const saveResult = (result: AnnotationResult) =>
+    record({
+      ip, clientId, text, result, ms: Date.now() - started,
+      status: isRefusal(result) ? "refused" : "ok",
+      profile: result.meta?.detectedProfile ?? result.profile,
+      detectReason: result.meta?.detectReason,
+      marks: isRefusal(result) ? 0 : result.spans.length,
+    });
+
+  if (text.length > LIMITS.maxChars) {
+    await saveError("too_long");
+    return fail(413, "too_long", `Text is ${text.length} characters; the limit is ${LIMITS.maxChars}.`);
+  }
+  if (!checkAccessCode(body?.code)) {
+    await saveError("access_code");
+    return fail(401, "access_code", "That access code is not right.");
+  }
+
+  const quota = takeQuota(ip);
   if (!quota.ok) {
     const minutes = Math.max(1, Math.ceil(quota.retryAfter / 60));
+    await saveError(quota.scope === "daily" ? "daily_limit" : "rate_limited");
     return fail(429, quota.scope === "daily" ? "daily_limit" : "rate_limited",
       quota.scope === "daily"
         ? "Today's live annotation budget is used up. The demo pages still work."
@@ -65,9 +89,12 @@ export async function POST(req: Request) {
   // Plain JSON for script-tag integrations; server-sent events for the playground's live progress.
   if (!req.headers.get("accept")?.includes("text/event-stream")) {
     try {
-      return Response.json(await run());
+      const result = await run();
+      await saveResult(result);
+      return Response.json(result);
     } catch (e) {
       const [code, message] = describe(e);
+      await saveError(code);
       return fail(code === "timeout" ? 504 : 502, code, message);
     }
   }
@@ -79,9 +106,11 @@ export async function POST(req: Request) {
         controller.enqueue(encoder.encode(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`));
       try {
         const result = await run((e) => send("progress", e));
+        await saveResult(result);
         send("result", result);
       } catch (e) {
         const [code, message] = describe(e);
+        await saveError(code);
         send("error", { code, error: message });
       } finally {
         controller.close();

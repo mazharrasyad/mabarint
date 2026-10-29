@@ -57,7 +57,7 @@ unrender(element);                                  // back to the original plai
 Content-Type: application/json
 Accept: application/json            (or text/event-stream for live progress)
 
-{ "text": "…", "profile": "auto" | "novel" | "news" | "script", "context": "optional preceding text" }
+{ "text": "…", "profile": "auto" | "novel" | "news" | "script", "context": "optional preceding text", "clientId": "optional browser id for history" }
 
 // "auto" (the default) lets Muse Spark detect the type first; the result reports meta.detectedProfile.`}</pre>
         <p>Pipeline for every paragraph:</p>
@@ -69,7 +69,7 @@ Accept: application/json            (or text/event-stream for live progress)
           <li><strong>Repair</strong>: send the errors back to Muse Spark, up to two rounds; spans that still fail are dropped.</li>
           <li><strong>Cache</strong> by SHA-256 of text, profile, context, schema version, model and prompt.</li>
         </ol>
-        <p className="small muted">The live playground is open to everyone and rate limited per IP and per day. A server can optionally require an access code (<code>PLAYGROUND_ACCESS_CODE</code>).</p>
+        <p className="small muted">Each run is saved on the server with its time, text and result (one JSON line per run, IP stored only as a salted hash); <code>GET /mabarint/api/history?client=&lt;browser id&gt;</code> returns a browser&apos;s own runs. The live playground is open to everyone and rate limited per IP and per day. A server can optionally require an access code (<code>PLAYGROUND_ACCESS_CODE</code>).</p>
       </section>
 
       <section className="section">

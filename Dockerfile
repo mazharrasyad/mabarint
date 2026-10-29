@@ -12,11 +12,11 @@ RUN npm run build
 
 FROM node:20-alpine
 WORKDIR /app
-ENV NODE_ENV=production PORT=3000 HOSTNAME=0.0.0.0 CACHE_DIR=/data/cache
+ENV NODE_ENV=production PORT=3000 HOSTNAME=0.0.0.0 CACHE_DIR=/data/cache HISTORY_FILE=/data/history/history.jsonl
 COPY --from=build /repo/apps/web/.next/standalone ./
 COPY --from=build /repo/apps/web/.next/static ./apps/web/.next/static
 COPY --from=build /repo/apps/web/public ./apps/web/public
-RUN mkdir -p /data/cache && chown -R node:node /data
+RUN mkdir -p /data/cache /data/history && chown -R node:node /data
 USER node
 EXPOSE 3000
 CMD ["node", "apps/web/server.js"]

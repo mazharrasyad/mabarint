@@ -30,7 +30,7 @@ const PAGES = [
 
 /**
  * Tutorial popup. Opens every time the home page is opened, and on the first
- * visit to any other page; the Guide button reopens it anywhere.
+ * visit to any other page.
  */
 export function Guide() {
   const ref = useRef<HTMLDialogElement>(null);
@@ -113,7 +113,7 @@ export function Guide() {
               </li>
             ))}
           </ul>
-          <p className="small muted">You can reopen this guide any time from the <strong>Guide</strong> button at the top.</p>
+          <p className="small muted">This guide opens again whenever you come back to the home page.</p>
         </>
       ),
     },
@@ -122,7 +122,6 @@ export function Guide() {
 
   return (
     <>
-      <button type="button" className="guide-open" onClick={open} aria-haspopup="dialog">Guide</button>
       <dialog ref={ref} className="guide" aria-labelledby="guide-title" onCancel={close}>
         <div className="guide-head">
           <span className="small muted">Step {step + 1} of {steps.length}</span>

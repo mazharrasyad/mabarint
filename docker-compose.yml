@@ -8,5 +8,8 @@ services:
       - "127.0.0.1:3200:3000"
     volumes:
       - cache:/data/cache
+      # Playground history (one JSON line per Annotate click).
+      - history:/data/history
 volumes:
   cache:
+  history:
