@@ -83,8 +83,10 @@ function attachTooltips(root: HTMLElement) {
       tooltip.id = "mbr-tooltip";
       tooltip.setAttribute("role", "tooltip");
       tooltip.hidden = true;
-      doc.body.appendChild(tooltip);
     }
+    // A modal <dialog> sits in the top layer, so the tooltip must live inside it to be visible.
+    const host = target.closest("dialog[open]") ?? doc.body;
+    if (tooltip.parentElement !== host) host.appendChild(tooltip);
     tooltip.replaceChildren(...target.dataset.mbrTip!.split("\n").map((line) => {
       const d = doc.createElement("div");
       d.textContent = line;

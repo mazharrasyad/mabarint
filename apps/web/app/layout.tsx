@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { Inter, Literata } from "next/font/google";
+import { Guide } from "@/components/guide";
 import { Nav } from "@/components/nav";
 import { ToastProvider } from "@/components/toast";
 import "./globals.css";
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 Mabarint
               </Link>
               <Nav />
+              <Guide />
             </div>
           </header>
           <main>{children}</main>

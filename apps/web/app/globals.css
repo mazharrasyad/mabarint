@@ -178,3 +178,31 @@ th { font-weight: 650; }
 .site-footer { border-top: 1px solid var(--line); padding: 24px 0 40px; font-size: 14px; color: var(--muted); }
 
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* First-visit guide */
+.guide-open {
+  border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; font-size: 14px; font-weight: 600;
+  padding: 6px 12px; border-radius: 999px; cursor: pointer; min-height: 34px;
+}
+.guide-open:hover { border-color: var(--accent); }
+.guide {
+  width: min(560px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); overflow-y: auto;
+  border: 1px solid var(--line); border-radius: 16px; padding: 20px 22px;
+  background: var(--surface); color: var(--fg); box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
+}
+.guide::backdrop { background: rgba(10, 9, 7, 0.55); }
+.guide h2 { margin: 6px 0 12px; }
+.guide-head { display: flex; justify-content: space-between; align-items: center; }
+.guide-close { border: 0; background: none; color: var(--muted); font-size: 24px; line-height: 1; cursor: pointer; padding: 4px 8px; }
+.guide-body { min-height: 200px; }
+.guide-sample { background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+.guide-sample .reading { font-size: 17px; }
+.guide-marks, .guide-pages { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 10px; }
+.guide-marks li { display: grid; grid-template-columns: 64px 1fr; gap: 12px; align-items: baseline; font-size: 15px; }
+.guide-mark-sample { font-size: 19px; text-align: center; }
+.guide-pages li { font-size: 15px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; }
+.guide-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+.guide-actions { display: flex; gap: 8px; margin-left: auto; }
+.guide-dots { display: flex; gap: 6px; }
+.guide-dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+.guide-dots span.on { background: var(--accent); }
