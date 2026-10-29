@@ -44,6 +44,36 @@ Plain text ──► [1] Annotation engine ──► [2] Mabarint JSON ──►
   - `low` for the live playground: about 5 seconds per paragraph.
   - `medium` for the precomputed demo pages, where quality matters more than speed.
 
+## Built with Claude Code × Meta Model API
+
+Mabarint is a collaboration between two AI agents with clearly separate roles:
+
+| | Role in Mabarint |
+|---|---|
+| **Meta Muse Spark** (`muse-spark-1.3`, Meta Model API) | **The product's brain.** Every annotation a reader sees comes from Muse Spark: the live playground, the precomputed demo pages, and the reasons in the tooltips. |
+| **Claude Code** (Anthropic's terminal coding agent) | **The development partner.** It planned the monorepo, wrote the engine, renderer, demo site and tests, ran experiments against the live Muse Spark API, and deployed the app to the VPS. |
+
+Muse Spark was also part of the development loop. Every prompt and validation change was checked against the real model before it was committed:
+- Measuring `reasoning_effort` latency.
+- Tuning the contrastive-stress rule until the "one sentence, many meanings" demo went from 4 of 6 to 6 of 6 correct readings.
+- Confirming that the repair loop and the news refusal behave on real output.
+
+**Meta supports this pairing directly.** The Meta Model API exposes an Anthropic-format [Messages API](https://dev.meta.ai/docs/protocols/messages) at `https://api.meta.ai`. Meta's [coding agents guide](https://dev.meta.ai/docs/coding-agents) shows how to point Claude Code at it, so Claude Code's own agent loop runs on Meta's models:
+
+```bash
+export ANTHROPIC_BASE_URL="https://api.meta.ai"
+export ANTHROPIC_AUTH_TOKEN="$MODEL_API_KEY"
+export ANTHROPIC_MODEL="muse-wonder-1.0"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="muse-wonder-1.0"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="muse-spark-1.3"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="muse-spark-1.3"
+export CLAUDE_CODE_SUBAGENT_MODEL="muse-spark-1.3"
+export ENABLE_TOOL_SEARCH="true"
+claude
+```
+
+In this build, Claude Code ran on Anthropic's Claude model, and the shipped product runs entirely on Meta's Muse Spark. With the configuration above, a contributor can keep developing Mabarint in Claude Code with Muse Wonder and Muse Spark driving the agent, end to end on Meta models. Commits written with Claude Code carry a `Co-Authored-By: Claude` trailer, so the history shows what was built during the event.
+
 ## Notation guide
 
 | Dimension | Visual |
@@ -149,6 +179,10 @@ Live demo: https://mazharrasyad.tech/mabarint
 - **Verify-and-repair loop:** we wrap Muse Spark in a verifiable agent loop. The engine recomputes offsets from exact quotes, validates the schema and reading rules (stress density, one emotion per utterance, neutral news narration), and sends any errors back to Muse Spark to repair, up to two rounds.
 - **`reasoning_effort` as a product setting:** `low` for the live playground (about 5 s per paragraph), `medium` for the precomputed demo pages.
 - **Precomputed demos:** a precompute script runs every demo through the same engine, so the demo pages are instant and cost nothing per visit.
+- **Built with Claude Code × Meta Model API:**
+  - Claude Code, Anthropic's coding agent, was the development partner. It wrote and deployed the codebase while testing every prompt change against live Muse Spark.
+  - Muse Spark powers everything readers see.
+  - Meta's Model API also exposes an Anthropic-format Messages endpoint (`https://api.meta.ai`) that Claude Code can use directly, with Muse Wonder for the main loop and Muse Spark for subagents. The README documents that setup so contributors can keep building Mabarint end to end on Meta models.
 
 **Why are Meta's models important to your solution?**
 Annotating prosody is a reading-comprehension problem, not a keyword problem. Muse Spark has to:
@@ -172,6 +206,7 @@ This needs strong long-context reasoning together with reliable structured outpu
 - Muse Spark copied quotes exactly and its character offsets were correct in our runs. We still recompute offsets server-side as a safety net.
 - Contrastive stress needed one explicit prompt rule. It went from 4 of 6 to 6 of 6 correct readings in the "one sentence" demo, which suggests the model follows precise linguistic instructions well.
 - The quickstart leads with the Responses API. A short note that Chat Completions with `response_format` is fully supported would help people porting existing code.
+- Supporting both OpenAI-compatible and Anthropic Messages formats is a strong choice. A project like ours can use the OpenAI SDK at runtime while the team's coding agent (Claude Code) can be pointed at the same API key, using the copy-paste environment block in the coding agents guide.
 
 **Feedback on partner technologies (Fireworks, Modal, Baseten):**
 Not used in this submission; all inference goes through the Meta Model API. Running the engine on Muse Spark Open via Baseten or Modal is the planned next step.

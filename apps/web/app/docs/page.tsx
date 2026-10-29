@@ -70,6 +70,31 @@ Accept: application/json            (or text/event-stream for live progress)
       </section>
 
       <section className="section">
+        <h2>How it was built: Claude Code × Meta Model API</h2>
+        <p>
+          <strong>Meta Muse Spark</strong> is the product&apos;s brain: every annotation on this site, live or
+          precomputed, comes from <code>muse-spark-1.3</code>. <strong>Claude Code</strong>, Anthropic&apos;s terminal
+          coding agent, was the development partner. It wrote the engine, renderer, site and tests, checked each
+          prompt change against live Muse Spark, and deployed this server.
+        </p>
+        <p>
+          Meta supports this pairing directly. The Model API exposes an Anthropic-format{" "}
+          <a href="https://dev.meta.ai/docs/protocols/messages">Messages API</a> at <code>https://api.meta.ai</code>, so
+          Claude Code&apos;s own agent loop can run on Meta&apos;s models (from Meta&apos;s{" "}
+          <a href="https://dev.meta.ai/docs/coding-agents">coding agents guide</a>):
+        </p>
+        <pre>{`export ANTHROPIC_BASE_URL="https://api.meta.ai"
+export ANTHROPIC_AUTH_TOKEN="$MODEL_API_KEY"
+export ANTHROPIC_MODEL="muse-wonder-1.0"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="muse-wonder-1.0"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="muse-spark-1.3"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="muse-spark-1.3"
+export CLAUDE_CODE_SUBAGENT_MODEL="muse-spark-1.3"
+export ENABLE_TOOL_SEARCH="true"
+claude`}</pre>
+      </section>
+
+      <section className="section">
         <h2>4. Format (v0.1)</h2>
         <pre>{`{
   "version": "0.1", "profile": "novel", "lang": "en", "tone": "grief",

@@ -43,7 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main>{children}</main>
           <footer className="site-footer">
             <div className="wrap">
-              Built for the Meta Global AI Developer Hackathon (Oct 27 to Nov 4, 2026) with Muse Spark.{" "}
+              Annotations by Meta Muse Spark · built with Claude Code · Meta Global AI Developer Hackathon (Oct 27 to Nov 4, 2026).{" "}
               <a href="https://github.com/mazharrasyad/mabarint">Source on GitHub</a> · MIT license
             </div>
           </footer>
