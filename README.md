@@ -147,66 +147,100 @@ Everything in this repository was created during the event: the annotation schem
 
 ## Hackathon submission (form drafts)
 
-**Team Name:** Mabarint
+Each block is plain text, ready to paste into the form's text fields (no Markdown, numbered points only). Use the copy button on each block. The judges' access code for the live playground is added only in the form, never in this public repository.
 
-**Team Members:** Muhammad Azhar Rasyad (mazharrasyad)
+### Team Name
+```text
+Mabarint
+```
 
-**Track:** Indie Developer
+### Team Members
+```text
+Muhammad Azhar Rasyad (mazharrasyad)
+```
 
-**Problem statement:** Build for Your World
+### Which track are you submitting to?
+```text
+Indie Developer
+```
 
-**X post link (Most Viral):** _add after posting the demo_
+### Which problem statement did you build towards?
+```text
+Build for Your World
+```
 
-**Project Description:**
+### X post link (Most Viral Track)
+```text
+(add after posting the demo)
+```
+
+### Project Description
+```text
 Plain text loses the voice. "I didn't say she stole it" means six different things depending on the stressed word, yet on a screen every reading looks the same. Authors only have bold and italics, and readers (especially language learners and people reading aloud) have to guess tone, sarcasm and emotion.
 
 Mabarint is a new reading format: authors write plain text, and readers see how it should be read. Meta's Muse Spark reads the context of each passage (dialogue tags, punctuation, contrast, scene mood, who is speaking to whom) and returns structured prosody annotations. A verification engine recomputes offsets from exact quotes, checks the schema and reading rules, and sends errors back to Muse Spark to repair. A tiny renderer then adds tajwid-like notation to the original text on any web page: heavier weight for stress, pause marks, drawn-out spacing, pitch arrows and soft emotion underlines. Readers switch it Off, Subtle or Full and can hover any mark to read the AI's reason.
 
 Key features:
-- The "one sentence, many meanings" demo.
-- Novel and news profiles. The news profile keeps reporter narration neutral and refuses political content.
-- A live playground with step-by-step progress.
-- An open JSON schema and a one-line script-tag integration.
+1. "One sentence, many meanings": the same sentence in six contexts, and Muse Spark moves the stress to the right word each time, with a reason.
+2. Novel and news profiles. The news profile keeps reporter narration neutral and refuses political or war content.
+3. A live playground that shows each engine step (reading, validating, repairing) and a success or error notification.
+4. A first-visit guide that teaches readers the notation in four short steps.
+5. An open JSON schema and a one-line script-tag integration for any website.
 
 Live demo: https://mazharrasyad.tech/mabarint
+Playground access code for judges: (add the code here in the form only)
+```
 
-**Public GitHub Repository:** https://github.com/mazharrasyad/mabarint
+### Public GitHub Repository
+```text
+https://github.com/mazharrasyad/mabarint
+```
 
-**3-Minute Demo Video:** _add link_
+### 3-Minute Demo Video
+```text
+(add link)
+```
 
-**Describe your use of Meta products:**
-- **Muse Spark** (`muse-spark-1.3`, Meta Model API, OpenAI-compatible Chat Completions with JSON mode) is the core of Mabarint's annotation engine. For every paragraph it receives the passage plus the preceding text, infers how a skilled narrator would read it (speaker, emotion, contrastive stress, pauses, pitch, tempo, volume), and returns spans with a short reason that readers see in tooltips.
-- **Verify-and-repair loop:** we wrap Muse Spark in a verifiable agent loop. The engine recomputes offsets from exact quotes, validates the schema and reading rules (stress density, one emotion per utterance, neutral news narration), and sends any errors back to Muse Spark to repair, up to two rounds.
-- **`reasoning_effort` as a product setting:** `low` for the live playground (about 5 s per paragraph), `medium` for the precomputed demo pages.
-- **Precomputed demos:** a precompute script runs every demo through the same engine, so the demo pages are instant and cost nothing per visit.
-- **Built with Claude Code × Meta Model API:**
-  - Claude Code, Anthropic's coding agent, was the development partner. It wrote and deployed the codebase while testing every prompt change against live Muse Spark.
-  - Muse Spark powers everything readers see.
-  - Meta's Model API also exposes an Anthropic-format Messages endpoint (`https://api.meta.ai`) that Claude Code can use directly, with Muse Wonder for the main loop and Muse Spark for subagents. The README documents that setup so contributors can keep building Mabarint end to end on Meta models.
+### Describe your use of Meta products to build the submitted project
+```text
+1. Muse Spark (muse-spark-1.3) through the Meta Model API is the core of Mabarint's annotation engine. We call it with the OpenAI-compatible Chat Completions endpoint in JSON mode. For every paragraph it receives the passage plus the preceding text, infers how a skilled narrator would read it (speaker, emotion, contrastive stress, pauses, pitch, tempo, volume), and returns spans with a short reason that readers see in tooltips.
 
-**Why are Meta's models important to your solution?**
-Annotating prosody is a reading-comprehension problem, not a keyword problem. Muse Spark has to:
-- work out who is speaking,
-- notice that "Oh, wonderful" after a flat tyre is sarcasm,
-- see that a denial in the next line moves the stress to "she" or to "stole",
-- carry a scene's mood across paragraphs.
+2. Verify-and-repair loop: we wrap Muse Spark in a verifiable agent loop. The engine recomputes offsets from exact quotes, validates the schema and reading rules (stress density, one emotion per utterance, neutral news narration), and sends any errors back to Muse Spark to repair, up to two rounds.
+
+3. Reasoning effort as a product setting: low for the live playground (about 5 seconds per paragraph), medium for the precomputed demo pages where quality matters more than speed.
+
+4. Precomputed demos: a precompute script runs every demo page through the same Muse Spark engine, so the demo pages are instant and cost nothing per visit.
+
+5. Built with Claude Code and the Meta Model API: Claude Code, Anthropic's coding agent, was the development partner. It wrote and deployed the codebase while every prompt change was tested against live Muse Spark. Muse Spark powers everything readers see. Meta's Model API also exposes an Anthropic-format Messages endpoint (https://api.meta.ai) that Claude Code can use directly, with Muse Wonder for the main loop and Muse Spark for subagents, and our README documents that setup so contributors can keep building Mabarint end to end on Meta models.
+```
+
+### Why are Meta's models important to your solution?
+```text
+Annotating prosody is a reading-comprehension problem, not a keyword problem. To mark a passage correctly, Muse Spark has to:
+1. Work out who is speaking and to whom.
+2. Notice that "Oh, wonderful" after a flat tyre is sarcasm, not joy.
+3. See that a denial in the next line moves the stress to "she" or to "stole".
+4. Carry a scene's mood across paragraphs.
 
 This needs strong long-context reasoning together with reliable structured output, which Muse Spark provides through JSON mode. The adjustable reasoning effort lets us trade depth for latency per use case. Because the format is open and the API is OpenAI-compatible, platforms can later move to Muse Spark Open weights and self-host for privacy and cost.
+```
 
-**Feedback on Meta products:**
-- The OpenAI-compatible endpoint made the first call trivial: only the base URL and key changed. JSON mode worked together with `reasoning_effort` on Chat Completions.
-- `reasoning_effort` is a big lever, and the docs could highlight its cost impact more. On the same passage:
+### Provide feedback from your experience using Meta products
+```text
+1. The OpenAI-compatible endpoint made the first call trivial: only the base URL and key changed. JSON mode worked together with reasoning_effort on Chat Completions.
 
-  | Setting | Time | Completion tokens | Reasoning tokens |
-  |---|---|---|---|
-  | `low` | ~4.8 s | ~1.1k | ~950 |
-  | `medium` | ~9.5 s | ~2.2k | ~2.0k |
+2. reasoning_effort is a big lever, and the docs could highlight its cost impact more. On the same passage, low took about 4.8 seconds with about 1.1k completion tokens (about 950 of them reasoning), while medium took about 9.5 seconds with about 2.2k completion tokens (about 2.0k reasoning). Reasoning tokens are billed as output.
 
-  Reasoning tokens are billed as output.
-- Muse Spark copied quotes exactly and its character offsets were correct in our runs. We still recompute offsets server-side as a safety net.
-- Contrastive stress needed one explicit prompt rule. It went from 4 of 6 to 6 of 6 correct readings in the "one sentence" demo, which suggests the model follows precise linguistic instructions well.
-- The quickstart leads with the Responses API. A short note that Chat Completions with `response_format` is fully supported would help people porting existing code.
-- Supporting both OpenAI-compatible and Anthropic Messages formats is a strong choice. A project like ours can use the OpenAI SDK at runtime while the team's coding agent (Claude Code) can be pointed at the same API key, using the copy-paste environment block in the coding agents guide.
+3. Muse Spark copied quotes exactly and its character offsets were correct in our runs. We still recompute offsets server-side as a safety net.
 
-**Feedback on partner technologies (Fireworks, Modal, Baseten):**
+4. Contrastive stress needed one explicit prompt rule. It went from 4 of 6 to 6 of 6 correct readings in our "one sentence" demo, which shows the model follows precise linguistic instructions well.
+
+5. The quickstart leads with the Responses API. A short note that Chat Completions with response_format is fully supported would help people porting existing code.
+
+6. Supporting both OpenAI-compatible and Anthropic Messages formats is a strong choice. Our runtime uses the OpenAI SDK, while a coding agent like Claude Code can be pointed at the same API key with the copy-paste environment block in the coding agents guide.
+```
+
+### Provide feedback from your experience using partner technologies (Fireworks, Modal, Baseten)
+```text
 Not used in this submission; all inference goes through the Meta Model API. Running the engine on Muse Spark Open via Baseten or Modal is the planned next step.
+```
