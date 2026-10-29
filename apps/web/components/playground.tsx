@@ -27,7 +27,7 @@ export function Playground({ presets }: { presets: Demo[] }) {
   const startedAt = useRef(0);
 
   useEffect(() => {
-    fetch(API).then((r) => r.json()).then(setConfig).catch(() => setConfig({ enabled: false, requiresCode: true, maxChars: 1000, model: "" }));
+    fetch(API).then((r) => r.json()).then(setConfig).catch(() => setConfig({ enabled: false, requiresCode: false, maxChars: 1000, model: "" }));
     try { setCode(sessionStorage.getItem(CODE_KEY) ?? ""); } catch { /* storage blocked */ }
   }, []);
 
@@ -53,7 +53,7 @@ export function Playground({ presets }: { presets: Demo[] }) {
     if (busy) return;
     if (!text.trim()) return toast({ kind: "error", title: "Nothing to annotate", body: "Paste some text first." });
     if (tooLong) return toast({ kind: "error", title: "Text is too long", body: `Keep it under ${maxChars} characters.` });
-    if (config?.requiresCode && !code.trim()) return toast({ kind: "error", title: "Access code needed", body: "Live runs are for the hackathon judges. The code is in the submission form." });
+    if (config?.requiresCode && !code.trim()) return toast({ kind: "error", title: "Access code needed", body: "This server requires an access code for live runs." });
 
     setBusy(true);
     setSteps([]);
@@ -131,10 +131,10 @@ export function Playground({ presets }: { presets: Demo[] }) {
               <option value="script">Script: pauses and tempo for reading aloud</option>
             </select>
           </div>
-          {config?.requiresCode !== false && (
+          {config?.requiresCode && (
             <div className="field">
               <label htmlFor="pg-code">Access code</label>
-              <input id="pg-code" type="password" autoComplete="off" value={code} onChange={(e) => setCode(e.target.value)} disabled={busy} placeholder="From the submission form" />
+              <input id="pg-code" type="password" autoComplete="off" value={code} onChange={(e) => setCode(e.target.value)} disabled={busy} placeholder="Access code" />
             </div>
           )}
           <button type="button" className="btn" onClick={annotate} disabled={busy || config?.enabled === false} aria-busy={busy}>

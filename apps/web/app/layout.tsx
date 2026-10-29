@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: "%s | Mabarint",
   },
   description: "Mabarint uses Meta's Muse Spark to add tajwid-like notation for intonation and emotion to plain text.",
-  // The live demo is for the hackathon judges, not for search engines.
+  // Hackathon demo: open to everyone, but kept out of search engines for now.
   robots: { index: false, follow: false },
 };
 

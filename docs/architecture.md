@@ -27,4 +27,4 @@ Progress events (`segment`, `model`, `validate`, `repair`, `merge`, `done`) are 
 
 ## Demo site (`apps/web`)
 
-Next.js App Router with `basePath: /mabarint`, built as standalone output and run in Docker behind nginx. The demo pages import precomputed JSON from `public/demo-data`, which `scripts/precompute.ts` generates with the real engine at `medium` effort. `POST /api/annotate` checks the kill switch, input length, access code, per-IP and daily quotas, then runs the engine with a 90-second timeout.
+Next.js App Router with `basePath: /mabarint`, built as standalone output and run in Docker behind nginx. The demo pages import precomputed JSON from `public/demo-data`, which `scripts/precompute.ts` generates with the real engine at `medium` effort. `POST /api/annotate` checks the kill switch, input length, the optional access code, per-IP and daily quotas, then runs the engine with a 90-second timeout.

@@ -24,7 +24,7 @@ const PAGES = [
   { href: "/meanings", title: "One sentence", text: "Start here: one sentence, six meanings." },
   { href: "/novel", title: "Novel", text: "Classic scenes with full notation." },
   { href: "/news", title: "News", text: "Quotes carry emotion, the reporter stays neutral." },
-  { href: "/playground", title: "Playground", text: "Annotate your own text live (judges' access code)." },
+  { href: "/playground", title: "Playground", text: "Annotate your own text live with Muse Spark." },
 ];
 
 /** First-visit tutorial. Opens once per browser; the Guide button reopens it. */

@@ -39,7 +39,7 @@ export async function POST(req: Request) {
   if (!text) return fail(400, "bad_request", "Paste some text to annotate.");
   if (!PROFILES.includes(profile)) return fail(400, "bad_request", `Profile must be one of ${PROFILES.join(", ")}.`);
   if (text.length > LIMITS.maxChars) return fail(413, "too_long", `Text is ${text.length} characters; the limit is ${LIMITS.maxChars}.`);
-  if (!checkAccessCode(body?.code)) return fail(401, "access_code", "That access code is not right. Judges can find it in the submission form.");
+  if (!checkAccessCode(body?.code)) return fail(401, "access_code", "That access code is not right.");
 
   const quota = takeQuota(clientIp(req.headers));
   if (!quota.ok) {

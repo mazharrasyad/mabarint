@@ -4,7 +4,7 @@
 
 Mabarint is a new reading format. It uses Meta's **Muse Spark** to read the context of plain text and add subtle, *tajwid-like* notation for intonation and emotion (stress, pauses, elongation, pitch, tempo, volume and emotion), so any digital text platform (novels, news, stories, scripts) can show readers **how** a passage should be read. Authors keep writing plain text and never touch the notation.
 
-- **Live demo:** https://mazharrasyad.tech/mabarint (the live playground needs the judges' access code; every other page is open)
+- **Live demo:** https://mazharrasyad.tech/mabarint (open to everyone, including the live playground)
 - **Demo video:** _add link_
 - Built during the Meta Global AI Developer Hackathon, Oct 27 to Nov 4, 2026.
 
@@ -117,7 +117,6 @@ render(element, annotation, { intensity: "full" });
 - Runs as a Docker container on a VPS behind nginx at `/mabarint` ([`Dockerfile`](Dockerfile), [`docker-compose.yml`](docker-compose.yml)).
 - `META_API_KEY` lives only in the server environment.
 - The demo pages use precomputed JSON, so they make **zero API calls**. Only the playground calls Muse Spark, and it is protected by:
-  - a judges' access code
   - a 1,000-character input limit
   - 10 requests per IP per 10 minutes
   - a daily cap
@@ -147,7 +146,7 @@ Everything in this repository was created during the event: the annotation schem
 
 ## Hackathon submission (form drafts)
 
-Each block is plain text, ready to paste into the form's text fields (no Markdown, numbered points only). Use the copy button on each block. The judges' access code for the live playground is added only in the form, never in this public repository.
+Each block is plain text, ready to paste into the form's text fields (no Markdown, numbered points only). Use the copy button on each block.
 
 ### Team Name
 ```text
@@ -187,8 +186,7 @@ Key features:
 4. A first-visit guide that teaches readers the notation in four short steps.
 5. An open JSON schema and a one-line script-tag integration for any website.
 
-Live demo: https://mazharrasyad.tech/mabarint
-Playground access code for judges: (add the code here in the form only)
+Live demo: https://mazharrasyad.tech/mabarint (open to everyone, no sign-up)
 ```
 
 ### Public GitHub Repository

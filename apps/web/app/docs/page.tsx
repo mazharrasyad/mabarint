@@ -57,7 +57,7 @@ unrender(element);                                  // back to the original plai
 Content-Type: application/json
 Accept: application/json            (or text/event-stream for live progress)
 
-{ "text": "…", "profile": "novel" | "news" | "script", "context": "optional preceding text", "code": "access code" }`}</pre>
+{ "text": "…", "profile": "novel" | "news" | "script", "context": "optional preceding text" }`}</pre>
         <p>Pipeline for every paragraph:</p>
         <ol>
           <li><strong>Segment</strong> into paragraphs, keeping the original character offsets.</li>
@@ -66,7 +66,7 @@ Accept: application/json            (or text/event-stream for live progress)
           <li><strong>Repair</strong>: send the errors back to Muse Spark, up to two rounds; spans that still fail are dropped.</li>
           <li><strong>Cache</strong> by SHA-256 of text, profile, context, schema version, model and prompt.</li>
         </ol>
-        <p className="small muted">The live demo requires an access code and is rate limited per IP and per day.</p>
+        <p className="small muted">The live playground is open to everyone and rate limited per IP and per day. A server can optionally require an access code (<code>PLAYGROUND_ACCESS_CODE</code>).</p>
       </section>
 
       <section className="section">

@@ -7,7 +7,7 @@ Stage directions are in Indonesian; the narration (voice-over) is in English for
 1. **Browser bersih:** gunakan jendela biasa (bukan incognito) di Chrome. Zoom 110–125% supaya teks terbaca di video. Sembunyikan bookmark bar.
 2. **Tutup popup Guide** sekali sebelum merekam, supaya tidak menghalangi di tengah video. Kalau ingin menampilkannya, buka lewat tombol **Guide**.
 3. **Siapkan 6 tab** sesuai urutan: `/mabarint/meanings`, `/mabarint/novel`, `/mabarint/news`, `/mabarint/playground`, `/mabarint/docs`, `/mabarint` (home).
-4. **Playground:** isi kode akses juri terlebih dahulu (tersimpan di browser selama sesi). Pilih profil **Novel**.
+4. **Playground:** terbuka untuk umum, tanpa kode akses. Pilih profil **Novel** sebelum merekam.
 5. **Teks live:**
    - **Latihan:** pakai teks B.
    - **Rekaman:** pakai teks A.
