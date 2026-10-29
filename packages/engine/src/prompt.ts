@@ -29,6 +29,12 @@ Profiles:
 - news: the reporter's narration stays neutral. Emotion, stress, elongate, pitch and volume are allowed ONLY inside quotations from sources; outside quotations use only tempo and pause. If the passage is about politics, elections, government conflict, or war, return {"refused": true, "reason": "<one sentence>"} instead.
 - script: text read aloud; prioritise pause and tempo, keep emotion light.`;
 
+export const DETECT_PROMPT = `You classify a passage so Mabarint can choose how to annotate it for reading aloud. Pick exactly one profile:
+- novel: fiction or storytelling with characters, dialogue or narration (novels, short stories, fan fiction, personal stories).
+- news: journalism or factual reporting (news articles, press releases, reports that quote sources).
+- script: text written to be spoken or performed (speeches, presentations, video or podcast scripts, voice-overs, ads, sermons, bedtime stories meant to be read aloud, poems for recitation).
+Return ONLY a JSON object: {"profile": "novel" | "news" | "script", "reason": "<at most 12 words, for the reader>"}`;
+
 export function userPrompt(text: string, profile: Profile = "novel", lang = "en", context = ""): string {
   return `PROFILE: ${profile}
 LANG: ${lang}

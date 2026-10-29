@@ -82,6 +82,9 @@ export interface AnnotationMeta {
   /** Validation messages that were fixed or led to a drop. */
   issues?: string[];
   ms?: number;
+  /** Set when the caller asked for profile "auto": what Muse Spark detected and why. */
+  detectedProfile?: Profile;
+  detectReason?: string;
   cached?: boolean;
 }
 

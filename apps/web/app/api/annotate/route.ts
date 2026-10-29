@@ -23,7 +23,7 @@ export function GET() {
     enabled: LIMITS.enabled && Boolean(process.env.META_API_KEY),
     requiresCode: Boolean(LIMITS.accessCode),
     maxChars: LIMITS.maxChars,
-    profiles: PROFILES,
+    profiles: ["auto", ...PROFILES],
     model: engine.model,
   });
 }
@@ -34,10 +34,11 @@ export async function POST(req: Request) {
   }
   const body = (await req.json().catch(() => null)) as Record<string, unknown> | null;
   const text = typeof body?.text === "string" ? body.text.trim() : "";
-  const profile = (body?.profile ?? "novel") as Profile;
+  // Muse Spark detects novel, news or script unless the caller picks one.
+  const profile = (body?.profile ?? "auto") as Profile | "auto";
   const context = typeof body?.context === "string" ? body.context.slice(0, LIMITS.maxChars) : "";
   if (!text) return fail(400, "bad_request", "Paste some text to annotate.");
-  if (!PROFILES.includes(profile)) return fail(400, "bad_request", `Profile must be one of ${PROFILES.join(", ")}.`);
+  if (profile !== "auto" && !PROFILES.includes(profile)) return fail(400, "bad_request", `Profile must be auto or one of ${PROFILES.join(", ")}.`);
   if (text.length > LIMITS.maxChars) return fail(413, "too_long", `Text is ${text.length} characters; the limit is ${LIMITS.maxChars}.`);
   if (!checkAccessCode(body?.code)) return fail(401, "access_code", "That access code is not right.");
 

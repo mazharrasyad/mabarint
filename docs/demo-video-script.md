@@ -57,12 +57,12 @@ Tom kissed her cheek. "I brought your favourite cake."
 
 ### 2:00–2:35 · Playground live + sisi developer
 **Layar:** `/playground`. Tempel **teks A**, klik **Annotate with Muse Spark**.
-1. Tunjukkan langkah progres: *Muse Spark is reading the context*, *Validating offsets, schema and reading rules*.
+1. Tunjukkan langkah progres: *Detected: story (novel profile)*, *Muse Spark is reading the context*, *Validating offsets, schema and reading rules*.
 2. Tunjukkan notifikasi ✓ hijau, lalu hasilnya.
 3. Klik tab **Mabarint JSON** dan scroll sebentar.
 4. Pindah ke `/docs` dan tunjukkan snippet `<script>` di bagian 1.
 
-> Here is a live run. Muse Spark reads each paragraph with the text before it as context. Then our engine checks every span: exact quotes, offsets, the schema, the stress density, and sends any errors back to Muse Spark to repair. The output is an open, offset-based JSON format. Any platform can render it with one script tag.
+> Here is a live run. No settings: Muse Spark first detects that this is a story, not news or a script. Then it reads each paragraph with the text before it as context. Then our engine checks every span: exact quotes, offsets, the schema, the stress density, and sends any errors back to Muse Spark to repair. The output is an open, offset-based JSON format. Any platform can render it with one script tag.
 
 ### 2:35–3:00 · Peran Meta, dampak, penutup
 **Layar:** `/mabarint` home, bagian *How it works*. Akhiri di hero: *Authors write plain text. Readers hear the voice.* dan URL.

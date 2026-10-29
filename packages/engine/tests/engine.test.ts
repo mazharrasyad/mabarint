@@ -159,3 +159,30 @@ test("engine gives up after max repairs and keeps the best attempt", async () =>
   assert.equal(out.spans.length, 1);
   assert.equal(out.meta.dropped, 1);
 });
+
+test("auto profile: Muse Spark detects the type first, then annotates with it", async () => {
+  const seenProfiles: string[] = [];
+  const engine = createEngine({
+    complete: async (messages) => {
+      if (messages[0].content.startsWith("You classify")) return JSON.stringify({ profile: "news", reason: "Factual report quoting a librarian." });
+      seenProfiles.push(/PROFILE: (\w+)/.exec(messages[1].content)![1]);
+      return JSON.stringify({ spans: [] });
+    },
+  });
+  const stages: string[] = [];
+  const out: any = await engine.annotate({ text: 'The library reopened. "We cried," she said.', profile: "auto", onProgress: (e) => stages.push(`${e.stage}:${e.message}`) });
+  assert.equal(out.profile, "news");
+  assert.equal(out.meta.detectedProfile, "news");
+  assert.deepEqual(seenProfiles, ["news"]);
+  assert.ok(stages.some((s) => s.startsWith("detect:Detected: news")));
+  assert.equal(out.meta.calls, 2, "one detect call plus one annotation call");
+});
+
+test("auto profile falls back to novel when detection is unusable", async () => {
+  const engine = createEngine({
+    complete: async (messages) => (messages[0].content.startsWith("You classify") ? "no idea" : JSON.stringify({ spans: [] })),
+  });
+  const out: any = await engine.annotate({ text: "Once there was a fox.", profile: "auto" });
+  assert.equal(out.profile, "novel");
+  assert.equal(out.meta.detectedProfile, "novel");
+});

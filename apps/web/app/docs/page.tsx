@@ -57,9 +57,12 @@ unrender(element);                                  // back to the original plai
 Content-Type: application/json
 Accept: application/json            (or text/event-stream for live progress)
 
-{ "text": "…", "profile": "novel" | "news" | "script", "context": "optional preceding text" }`}</pre>
+{ "text": "…", "profile": "auto" | "novel" | "news" | "script", "context": "optional preceding text" }
+
+// "auto" (the default) lets Muse Spark detect the type first; the result reports meta.detectedProfile.`}</pre>
         <p>Pipeline for every paragraph:</p>
         <ol>
+          <li><strong>Detect</strong> the type of text (story, news or read-aloud script) with Muse Spark when the profile is <code>auto</code>.</li>
           <li><strong>Segment</strong> into paragraphs, keeping the original character offsets.</li>
           <li><strong>Annotate</strong> with Muse Spark (<code>muse-spark-1.3</code>, JSON mode), passing the preceding paragraphs as context.</li>
           <li><strong>Validate</strong>: recompute offsets from each exact quote, check the schema, stress density (about 1 per 6 words), one emotion per utterance, and the news neutrality rule.</li>

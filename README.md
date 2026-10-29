@@ -30,7 +30,7 @@ Plain text ──► [1] Annotation engine ──► [2] Mabarint JSON ──►
 
 | Layer | Where | What it does |
 |---|---|---|
-| Engine | [`packages/engine`](packages/engine) | Splits text into paragraphs (keeping offsets) and annotates them in parallel, each with the preceding text as context. It validates every span (exact quote → offsets, enums, stress density of about 1 per 6 words, one emotion per utterance, news neutrality), repairs up to 2 rounds, then drops whatever still fails. Results are cached by SHA-256. |
+| Engine | [`packages/engine`](packages/engine) | Lets Muse Spark detect the type of text (story, news or read-aloud script) when the profile is `auto`, splits text into paragraphs (keeping offsets) and annotates them in parallel, each with the preceding text as context. It validates every span (exact quote → offsets, enums, stress density of about 1 per 6 words, one emotion per utterance, news neutrality), repairs up to 2 rounds, then drops whatever still fails. Results are cached by SHA-256. |
 | Format | [`schema/mabarint.schema.json`](schema/mabarint.schema.json), [`packages/types`](packages/types) | 7 span types and 8 emotions. Offset-based, so the source text is never modified. |
 | Renderer | [`packages/renderer`](packages/renderer) | Flattens overlapping spans into runs and adds CSS for all 7 dimensions in light and dark mode. Plain / Mabarint switch, accessible tooltips, a legend, and `data-mabarint` auto-init. 11 KB script. |
 | Demo site | [`apps/web`](apps/web) | Next.js app with the Home, One sentence, Novel, News, Playground and Docs pages, plus `POST /api/annotate` with live progress over server-sent events. |
@@ -179,7 +179,7 @@ Plain text loses the voice. "I didn't say she stole it" means six different thin
 
 Mabarint is a new reading format: authors write plain text, and readers see how it should be read. Meta's Muse Spark reads the context of each passage (dialogue tags, punctuation, contrast, scene mood, who is speaking to whom) and returns structured prosody annotations. A verification engine recomputes offsets from exact quotes, checks the schema and reading rules, and sends errors back to Muse Spark to repair. A tiny renderer then adds tajwid-like notation to the original text on any web page: heavier weight for stress, pause marks, drawn-out spacing, pitch arrows and soft emotion underlines. Readers switch between Plain and Mabarint and can hover any mark to read the AI's reason.
 
-The demo shows the same sentence in six different contexts, and Muse Spark moves the stress to the right word each time and explains why. Novel and news profiles show how the format adapts: in news, the people quoted carry emotion while the reporter's narration stays neutral, and political or war stories are refused. A live playground lets anyone paste their own text and watch each engine step (reading, validating, repairing) end in a clear success or error notice, and a short first-visit guide teaches readers the notation. For developers, the format is an open JSON schema and the renderer is a single script tag that works on any website.
+The demo shows the same sentence in six different contexts, and Muse Spark moves the stress to the right word each time and explains why. Novel and news profiles show how the format adapts: in news, the people quoted carry emotion while the reporter's narration stays neutral, and political or war stories are refused. A live playground lets anyone paste their own text with no settings at all: Muse Spark first detects whether it is a story, news or a read-aloud script, and then readers watch each engine step (reading, validating, repairing) end in a clear success or error notice, and a short first-visit guide teaches readers the notation. For developers, the format is an open JSON schema and the renderer is a single script tag that works on any website.
 
 The live demo is open to everyone with no sign-up at https://mazharrasyad.tech/mabarint
 ```
@@ -196,7 +196,7 @@ https://github.com/mazharrasyad/mabarint
 
 ### Describe your use of Meta products to build the submitted project
 ```text
-Muse Spark (muse-spark-1.3) through the Meta Model API is the core of Mabarint's annotation engine. We call it with the OpenAI-compatible Chat Completions endpoint in JSON mode. For every paragraph it receives the passage plus the preceding text, infers how a skilled narrator would read it (speaker, emotion, contrastive stress, pauses, pitch, tempo, volume), and returns spans with a short reason that readers see in tooltips.
+Muse Spark (muse-spark-1.3) through the Meta Model API is the core of Mabarint's annotation engine. We call it with the OpenAI-compatible Chat Completions endpoint in JSON mode. First, Muse Spark detects whether a text is a story, news or a read-aloud script, so readers never have to pick a setting. Then, for every paragraph it receives the passage plus the preceding text, infers how a skilled narrator would read it (speaker, emotion, contrastive stress, pauses, pitch, tempo, volume), and returns spans with a short reason that readers see in tooltips.
 
 We wrap Muse Spark in a verifiable agent loop. The engine recomputes offsets from exact quotes, validates the schema and reading rules (stress density, one emotion per utterance, neutral news narration), and sends any errors back to Muse Spark to repair, up to two rounds.
 

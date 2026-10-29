@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { AnnotationResult, Profile } from "@mabarint/types";
+
+const TYPE_LABEL: Record<Profile, string> = { novel: "Story", news: "News", script: "Read-aloud script" };
 import { Annotated, IntensityProvider, IntensityToggle, Legend } from "@/components/reader";
 import { useToast } from "@/components/toast";
 import type { Demo } from "@/lib/demo";
@@ -17,7 +19,6 @@ export function Playground({ presets }: { presets: Demo[] }) {
   const toast = useToast();
   const [config, setConfig] = useState<Config | null>(null);
   const [text, setText] = useState(presets[0].text);
-  const [profile, setProfile] = useState<Profile>(presets[0].profile);
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [steps, setSteps] = useState<Step[]>([]);
@@ -36,7 +37,6 @@ export function Playground({ presets }: { presets: Demo[] }) {
 
   function loadPreset(d: Demo) {
     setText(d.text);
-    setProfile(d.profile);
     setResult(d.annotation);
     setSource("precomputed");
     setSteps([]);
@@ -65,7 +65,7 @@ export function Playground({ presets }: { presets: Demo[] }) {
       const res = await fetch(API, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "text/event-stream" },
-        body: JSON.stringify({ text, profile, code: code.trim() }),
+        body: JSON.stringify({ text, profile: "auto", code: code.trim() }),
       });
       if (!res.ok || !res.body) {
         const err = await res.json().catch(() => ({ error: `Request failed (${res.status})` }));
@@ -92,10 +92,11 @@ export function Playground({ presets }: { presets: Demo[] }) {
       toast({ kind: "error", title: "Refused by the news profile", body: final.reason });
     } else if ("spans" in final) {
       const repairs = final.meta?.repairs ?? 0;
+      const type = final.meta?.detectedProfile ?? final.profile;
       toast({
         kind: "success",
         title: final.meta?.cached ? "Loaded from cache" : `Annotated in ${secs}s`,
-        body: `${final.spans.length} marks added${repairs ? `, ${repairs} repair round${repairs > 1 ? "s" : ""}` : ""}.`,
+        body: `Detected as ${TYPE_LABEL[type].toLowerCase()}. ${final.spans.length} marks added${repairs ? `, ${repairs} repair round${repairs > 1 ? "s" : ""}` : ""}.`,
       });
     }
   }
@@ -118,19 +119,11 @@ export function Playground({ presets }: { presets: Demo[] }) {
           <label htmlFor="pg-text">Text</label>
           <textarea id="pg-text" value={text} onChange={(e) => setText(e.target.value)} disabled={busy} aria-describedby="pg-count" />
           <span id="pg-count" className="small" style={{ color: tooLong ? "var(--err)" : "var(--muted)" }}>
-            {text.length} / {maxChars} characters
+            {text.length} / {maxChars} characters · Muse Spark detects whether it is a story, news or a read-aloud script
           </span>
         </div>
 
         <div className="row">
-          <div className="field">
-            <label htmlFor="pg-profile">Profile</label>
-            <select id="pg-profile" value={profile} onChange={(e) => setProfile(e.target.value as Profile)} disabled={busy}>
-              <option value="novel">Novel: full emotion</option>
-              <option value="news">News: neutral narration, refuses politics</option>
-              <option value="script">Script: pauses and tempo for reading aloud</option>
-            </select>
-          </div>
           {config?.requiresCode && (
             <div className="field">
               <label htmlFor="pg-code">Access code</label>
@@ -158,6 +151,12 @@ export function Playground({ presets }: { presets: Demo[] }) {
           <div className="toolbar" style={{ top: 61 }}>
             <IntensityToggle />
             <span className="pill">{source === "live" ? `Live · ${config?.model ?? "muse-spark"}` : "Precomputed"}</span>
+            {result.profile && (
+              <span className="small" title={result.meta?.detectReason}>
+                Type: <strong>{TYPE_LABEL[result.meta?.detectedProfile ?? result.profile]}</strong>
+                {result.meta?.detectReason && <span className="muted"> · {result.meta.detectReason}</span>}
+              </span>
+            )}
             {result.meta?.ms !== undefined && !result.meta.cached && (
               <span className="small muted">{result.meta.calls} model call{result.meta.calls === 1 ? "" : "s"} · {(result.meta.ms / 1000).toFixed(1)}s engine time</span>
             )}

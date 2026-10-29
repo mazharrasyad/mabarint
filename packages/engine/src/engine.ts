@@ -4,7 +4,7 @@ import {
   type Annotation, type AnnotationResult, type Profile, type Refusal, type Span,
 } from "@mabarint/types";
 import { AnnotationCache, cacheKey } from "./cache";
-import { SYSTEM_PROMPT, repairPrompt, userPrompt } from "./prompt";
+import { DETECT_PROMPT, SYSTEM_PROMPT, repairPrompt, userPrompt } from "./prompt";
 import { paragraphs, type Segment } from "./segment";
 import { parseModelJson, validatePassage, type ValidationResult } from "./validate";
 
@@ -29,7 +29,7 @@ export interface EngineConfig {
   complete?: CompleteFn;
 }
 
-export type ProgressStage = "cache" | "segment" | "model" | "validate" | "repair" | "merge" | "done";
+export type ProgressStage = "cache" | "detect" | "segment" | "model" | "validate" | "repair" | "merge" | "done";
 export interface ProgressEvent {
   stage: ProgressStage;
   message: string;
@@ -39,7 +39,8 @@ export interface ProgressEvent {
 
 export interface AnnotateRequest {
   text: string;
-  profile?: Profile;
+  /** "auto" lets Muse Spark detect novel, news or script first. Defaults to "novel". */
+  profile?: Profile | "auto";
   lang?: string;
   /** Preceding text that informs the reading but is not annotated. */
   context?: string;
@@ -58,7 +59,7 @@ export function createEngine(config: EngineConfig = {}) {
   const complete = config.complete ?? metaComplete({ ...config, model, effort });
 
   async function annotatePassage(
-    seg: Segment, index: number, total: number, req: Required<Pick<AnnotateRequest, "profile" | "lang">> & AnnotateRequest,
+    seg: Segment, index: number, total: number, req: AnnotateRequest & { profile: Profile; lang: string },
     context: string, stats: { calls: number; repairs: number; issues: string[] },
   ): Promise<ValidationResult> {
     const where = total > 1 ? ` (paragraph ${index + 1}/${total})` : "";
@@ -93,24 +94,53 @@ export function createEngine(config: EngineConfig = {}) {
     return best!;
   }
 
+  /** Asks Muse Spark whether the text is a story, news or a script. Falls back to novel. */
+  async function detectProfile(text: string, signal: AbortSignal | undefined, stats: { calls: number }) {
+    stats.calls++;
+    try {
+      const raw = await complete([
+        { role: "system", content: DETECT_PROMPT },
+        { role: "user", content: text.slice(0, 2000) },
+      ], signal);
+      const data = parseModelJson(raw) as { profile?: string; reason?: string };
+      if (PROFILES.includes(data.profile as Profile)) {
+        const reason = String(data.reason ?? "").split(/\s+/).slice(0, 12).join(" ");
+        return { profile: data.profile as Profile, reason };
+      }
+    } catch (e) {
+      if (signal?.aborted) throw e;
+    }
+    return { profile: "novel" as Profile, reason: "Type unclear, read as a story." };
+  }
+
   async function annotate(input: AnnotateRequest): Promise<AnnotationResult> {
     const started = Date.now();
-    const req = { ...input, profile: input.profile ?? "novel", lang: input.lang ?? "en", context: input.context ?? "" };
-    if (!PROFILES.includes(req.profile)) throw new Error(`Unknown profile "${req.profile}"`);
-    const text = req.text;
+    const requested = input.profile ?? "novel";
+    if (requested !== "auto" && !PROFILES.includes(requested)) throw new Error(`Unknown profile "${requested}"`);
+    const lang = input.lang ?? "en";
+    const context = input.context ?? "";
+    const text = input.text;
 
-    const key = cacheKey({ text, profile: req.profile, lang: req.lang, context: req.context, v: SCHEMA_VERSION, model, effort, prompt: SYSTEM_PROMPT });
+    const key = cacheKey({ text, profile: requested, lang, context, v: SCHEMA_VERSION, model, effort, prompt: SYSTEM_PROMPT, detect: DETECT_PROMPT });
     const cached = await cache.get(key);
     if (cached) {
-      req.onProgress?.({ stage: "cache", message: "Loaded from cache" });
-      req.onProgress?.({ stage: "done", message: "Done" });
+      input.onProgress?.({ stage: "cache", message: "Loaded from cache" });
+      input.onProgress?.({ stage: "done", message: "Done" });
       return { ...cached, meta: { ...cached.meta, cached: true } };
     }
+
+    const stats = { calls: 0, repairs: 0, issues: [] as string[] };
+    let detected: { profile: Profile; reason: string } | undefined;
+    if (requested === "auto") {
+      input.onProgress?.({ stage: "detect", message: "Muse Spark is detecting the type of text" });
+      detected = await detectProfile(text, input.signal, stats);
+      input.onProgress?.({ stage: "detect", message: `Detected: ${PROFILE_LABEL[detected.profile]}${detected.reason ? ` (${detected.reason.replace(/\.$/, "")})` : ""}` });
+    }
+    const req = { ...input, profile: detected?.profile ?? (requested as Profile), lang, context };
 
     const segs = paragraphs(text);
     req.onProgress?.({ stage: "segment", message: `Split into ${segs.length} paragraph${segs.length === 1 ? "" : "s"}`, paragraphs: segs.length });
 
-    const stats = { calls: 0, repairs: 0, issues: [] as string[] };
     const results: ValidationResult[] = new Array(segs.length);
     let next = 0;
     const worker = async () => {
@@ -123,7 +153,10 @@ export function createEngine(config: EngineConfig = {}) {
     };
     await Promise.all(Array.from({ length: Math.min(concurrency, segs.length) }, worker));
 
-    const meta = { model, calls: stats.calls, repairs: stats.repairs, ms: Date.now() - started };
+    const meta = {
+      model, calls: stats.calls, repairs: stats.repairs, ms: Date.now() - started,
+      ...(detected ? { detectedProfile: detected.profile, detectReason: detected.reason } : {}),
+    };
     const refused = results.find((r) => r.refused);
     let out: AnnotationResult;
     if (refused) {
@@ -148,6 +181,8 @@ export function createEngine(config: EngineConfig = {}) {
 
   return { annotate, model, effort };
 }
+
+const PROFILE_LABEL: Record<Profile, string> = { novel: "story (novel profile)", news: "news (news profile)", script: "read-aloud script (script profile)" };
 
 /** Fewer problems wins; on a tie, the attempt that kept more valid spans. */
 function isBetter(a: ValidationResult, b: ValidationResult): boolean {
