@@ -7,12 +7,11 @@ export const metadata: Metadata = { title: "Playground" };
 export default function PlaygroundPage() {
   return (
     <div className="wrap narrow">
-      <p className="eyebrow">Live</p>
-      <h1>Playground</h1>
+      <p className="eyebrow">Playground</p>
+      <h1>How should this be read?</h1>
       <p className="lead">
-        Paste up to 1,000 characters and let Muse Spark annotate it. It first detects whether your text is a story,
-        news or a read-aloud script, then you see each step of the engine: reading, validating, and repairing when a
-        span fails the checks.
+        Paste a paragraph from a story, a news article or a speech. Meta&apos;s Muse Spark reads it like a narrator and
+        adds reading marks, so you can see which word to stress, where to pause and what the speaker feels.
       </p>
       <Playground presets={[DEMOS.home, DEMOS.alice, DEMOS.newsLibrary, DEMOS.script]} />
     </div>

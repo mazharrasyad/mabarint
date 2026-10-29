@@ -56,10 +56,10 @@ Tom kissed her cheek. "I brought your favourite cake."
 > News has its own profile. The people quoted carry emotion, like the librarian who "honestly cried," but the reporter's narration stays neutral. The engine enforces that rule after the model answers. And political or war stories are refused outright.
 
 ### 2:00–2:35 · Playground live + sisi developer
-**Layar:** `/playground`. Tempel **teks A**, klik **Annotate with Muse Spark**.
-1. Tunjukkan langkah progres: *Detected: story (novel profile)*, *Muse Spark is reading the context*, *Validating offsets, schema and reading rules*.
+**Layar:** `/playground`. Tempel **teks A**, klik **Add reading marks**.
+1. Tunjukkan langkah progres: *Looks like a story*, *Reading it like a narrator*, *Double-checking every mark*.
 2. Tunjukkan notifikasi ✓ hijau, lalu hasilnya.
-3. Klik tab **Mabarint JSON** dan scroll sebentar.
+3. Scroll ke **Recent readings** untuk menunjukkan riwayat (jam dan teks) dari semua pengunjung.
 4. Pindah ke Docs, tab **Developers** (`/docs#developers`), dan tunjukkan snippet `<script>` di bagian 1.
 
 > Here is a live run. No settings: Muse Spark first detects that this is a story, not news or a script. Then it reads each paragraph with the text before it as context. Then our engine checks every span: exact quotes, offsets, the schema, the stress density, and sends any errors back to Muse Spark to repair. The output is an open, offset-based JSON format. Any platform can render it with one script tag.

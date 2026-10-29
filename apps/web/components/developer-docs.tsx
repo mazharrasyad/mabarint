@@ -17,6 +17,12 @@ export function DeveloperDocs() {
         offset-based JSON format, and a renderer that turns it into typography.
       </p>
 
+      <p className="small muted">
+        Every demo on this site is a plain JSON file you can open: for example{" "}
+        <a href="/mabarint/demo-data/alice.json">demo-data/alice.json</a>. The Playground shows readers only the marks;
+        the same request with <code>Accept: application/json</code> returns the full annotation.
+      </p>
+
       <section className="section">
         <h3>1. Drop-in script tag</h3>
         <p>Render precomputed annotations, or let the script call the engine for each element.</p>

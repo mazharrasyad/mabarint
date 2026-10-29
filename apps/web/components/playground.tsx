@@ -3,7 +3,25 @@
 import { useEffect, useRef, useState } from "react";
 import type { AnnotationResult, Profile } from "@mabarint/types";
 
-const TYPE_LABEL: Record<Profile, string> = { novel: "Story", news: "News", script: "Read-aloud script" };
+const TYPE_LABEL: Record<Profile, string> = { novel: "Story", news: "News", script: "Speech or script" };
+
+/** Turns the engine's technical progress events into plain-language steps (null = not shown). */
+function friendlyStep(stage: string, message: string): string | null {
+  switch (stage) {
+    case "send": return "Sending your text";
+    case "cache": return "Found it among recent readings";
+    case "detect": {
+      const m = /Detected: (story|news|read-aloud script)/.exec(message);
+      if (!m) return "Figuring out what kind of text this is";
+      return m[1] === "story" ? "Looks like a story" : m[1] === "news" ? "Looks like a news article" : "Looks like a speech or script";
+    }
+    case "model": return "Reading it like a narrator";
+    case "validate": return "Double-checking every mark";
+    case "repair": return "Fixing a few marks";
+    case "done": return "Done";
+    default: return null;
+  }
+}
 import { Annotated, IntensityProvider, IntensityToggle, Legend } from "@/components/reader";
 import { useToast } from "@/components/toast";
 import type { Demo } from "@/lib/demo";
@@ -52,7 +70,6 @@ export function Playground({ presets }: { presets: Demo[] }) {
   const [steps, setSteps] = useState<Step[]>([]);
   const [result, setResult] = useState<Result | null>(presets[0].annotation);
   const [source, setSource] = useState<"precomputed" | "live">("precomputed");
-  const [tab, setTab] = useState<"rendered" | "json">("rendered");
   const startedAt = useRef(0);
   const [clientId, setClientId] = useState("anonymous");
   const [history, setHistory] = useState<HistoryItem[]>([]);
@@ -81,7 +98,6 @@ export function Playground({ presets }: { presets: Demo[] }) {
     if (h.result) {
       setResult({ ...h.result, text: h.result.text ?? h.text });
       setSource("live");
-      setTab("rendered");
     }
     setSteps([]);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -98,22 +114,25 @@ export function Playground({ presets }: { presets: Demo[] }) {
   }
 
   function progress(stage: string, message: string) {
+    const label = friendlyStep(stage, message);
+    if (!label) return;
     setSteps((all) => {
+      if (all.some((s) => s.message === label)) return all;
       const done = all.map((s) => ({ ...s, state: "done" as const }));
-      return [...done, { stage, message, state: "active" }];
+      return [...done, { stage, message: label, state: "active" }];
     });
   }
 
   async function annotate() {
     if (busy) return;
-    if (!text.trim()) return toast({ kind: "error", title: "Nothing to annotate", body: "Paste some text first." });
-    if (tooLong) return toast({ kind: "error", title: "Text is too long", body: `Keep it under ${maxChars} characters.` });
+    if (!text.trim()) return toast({ kind: "error", title: "Nothing to read yet", body: "Paste or type some text first." });
+    if (tooLong) return toast({ kind: "error", title: "Text is too long", body: `Please keep it under ${maxChars} characters.` });
     if (config?.requiresCode && !code.trim()) return toast({ kind: "error", title: "Access code needed", body: "This server requires an access code for live runs." });
 
     setBusy(true);
     setSteps([]);
     startedAt.current = performance.now();
-    progress("send", "Sending text to the Mabarint engine");
+    progress("send", "");
     try { sessionStorage.setItem(CODE_KEY, code.trim()); } catch { /* storage blocked */ }
 
     try {
@@ -131,7 +150,7 @@ export function Playground({ presets }: { presets: Demo[] }) {
     } catch (e) {
       const err = e as Error & { code?: string };
       setSteps((all) => all.map((s) => ({ ...s, state: "done" })));
-      toast({ kind: "error", title: errorTitle(err.code), body: err.message });
+      toast({ kind: "error", title: errorTitle(err.code), body: friendlyError(err.code, err.message) });
     } finally {
       setBusy(false);
       loadHistory();
@@ -143,16 +162,14 @@ export function Playground({ presets }: { presets: Demo[] }) {
     setSteps((all) => all.map((s) => ({ ...s, state: "done" })));
     setResult({ ...final, text: final.text ?? text });
     setSource("live");
-    setTab("rendered");
     if ("refused" in final && final.refused) {
-      toast({ kind: "error", title: "Refused by the news profile", body: final.reason });
+      toast({ kind: "error", title: "We can't mark this one", body: "Mabarint doesn't add marks to political or war news." });
     } else if ("spans" in final) {
-      const repairs = final.meta?.repairs ?? 0;
       const type = final.meta?.detectedProfile ?? final.profile;
       toast({
         kind: "success",
-        title: final.meta?.cached ? "Loaded from cache" : `Annotated in ${secs}s`,
-        body: `Detected as ${TYPE_LABEL[type].toLowerCase()}. ${final.spans.length} marks added${repairs ? `, ${repairs} repair round${repairs > 1 ? "s" : ""}` : ""}.`,
+        title: "Reading marks added",
+        body: `Looks like ${type === "news" ? "a news article" : type === "script" ? "a speech or script" : "a story"}. ${final.spans.length} marks in ${secs} seconds.`,
       });
     }
   }
@@ -161,7 +178,7 @@ export function Playground({ presets }: { presets: Demo[] }) {
     <IntensityProvider>
       <div className="card" style={{ display: "grid", gap: 14 }}>
         <div className="field">
-          <span className="label" style={{ margin: 0 }}>Examples (precomputed, no API call)</span>
+          <span className="label" style={{ margin: 0 }}>Try an example</span>
           <div className="row" style={{ gap: 8 }}>
             {presets.map((d) => (
               <button key={d.id} type="button" className="btn ghost" style={{ minHeight: 36, padding: "6px 12px", fontSize: 14 }} onClick={() => loadPreset(d)} disabled={busy}>
@@ -172,10 +189,10 @@ export function Playground({ presets }: { presets: Demo[] }) {
         </div>
 
         <div className="field">
-          <label htmlFor="pg-text">Text</label>
-          <textarea id="pg-text" value={text} onChange={(e) => setText(e.target.value)} disabled={busy} aria-describedby="pg-count" />
+          <label htmlFor="pg-text">Or paste your own text</label>
+          <textarea id="pg-text" value={text} onChange={(e) => setText(e.target.value)} disabled={busy} aria-describedby="pg-count" placeholder="Paste a paragraph from a story, a news article or a speech…" />
           <span id="pg-count" className="small" style={{ color: tooLong ? "var(--err)" : "var(--muted)" }}>
-            {text.length} / {maxChars} characters · Muse Spark detects whether it is a story, news or a read-aloud script
+            {text.length} / {maxChars} characters · No settings needed: Mabarint works out whether it&apos;s a story, news or a speech
           </span>
         </div>
 
@@ -187,12 +204,12 @@ export function Playground({ presets }: { presets: Demo[] }) {
             </div>
           )}
           <button type="button" className="btn" onClick={annotate} disabled={busy || config?.enabled === false} aria-busy={busy}>
-            {busy ? <><span className="spinner" aria-hidden="true" /> Annotating…</> : "Annotate with Muse Spark"}
+            {busy ? <><span className="spinner" aria-hidden="true" /> Reading your text…</> : "Add reading marks"}
           </button>
         </div>
 
         {config?.enabled === false && (
-          <p className="notice refused">The live playground is switched off right now. The examples above and the demo pages still work.</p>
+          <p className="notice refused">The Playground is resting right now. The examples above still work.</p>
         )}
 
         {steps.length > 0 && (
@@ -206,45 +223,34 @@ export function Playground({ presets }: { presets: Demo[] }) {
         <section className="section" style={{ marginTop: 28 }}>
           <div className="toolbar" style={{ top: 61 }}>
             <IntensityToggle />
-            <span className="pill">{source === "live" ? `Live · ${config?.model ?? "muse-spark"}` : "Precomputed"}</span>
+            {source === "precomputed" && <span className="pill">Example</span>}
             {result.profile && (
-              <span className="small" title={result.meta?.detectReason}>
-                Type: <strong>{TYPE_LABEL[result.meta?.detectedProfile ?? result.profile]}</strong>
-                {result.meta?.detectReason && <span className="muted"> · {result.meta.detectReason}</span>}
+              <span className="small">
+                Looks like: <strong>{TYPE_LABEL[result.meta?.detectedProfile ?? result.profile]}</strong>
               </span>
             )}
-            {result.meta?.ms !== undefined && !result.meta.cached && (
-              <span className="small muted">{result.meta.calls} model call{result.meta.calls === 1 ? "" : "s"} · {(result.meta.ms / 1000).toFixed(1)}s engine time</span>
+          </div>
+          <div className="card">
+            {"refused" in result && result.refused ? (
+              <p className="notice refused"><strong>We can&apos;t mark this one.</strong> Mabarint doesn&apos;t add marks to political or war news.</p>
+            ) : (
+              <Annotated text={result.text ?? text} spans={"spans" in result ? result.spans : []} />
             )}
           </div>
-          <div className="tabs" role="tablist">
-            <button role="tab" aria-selected={tab === "rendered"} onClick={() => setTab("rendered")}>Rendered</button>
-            <button role="tab" aria-selected={tab === "json"} onClick={() => setTab("json")}>Mabarint JSON</button>
-          </div>
-          {tab === "rendered" ? (
-            <div className="card">
-              {"refused" in result && result.refused ? (
-                <p className="notice refused"><strong>Refused.</strong> {result.reason}</p>
-              ) : (
-                <Annotated text={result.text ?? text} spans={"spans" in result ? result.spans : []} />
-              )}
-            </div>
-          ) : (
-            <pre>{JSON.stringify(result, null, 2)}</pre>
-          )}
+          <p className="small muted" style={{ marginTop: 10 }}>Hover or tap a marked word to see why it was marked.</p>
           <div className="card" style={{ marginTop: 16 }}><Legend /></div>
         </section>
       )}
 
       <section className="section" style={{ marginTop: 28 }} aria-labelledby="history-title">
-        <h2 id="history-title">History</h2>
+        <h2 id="history-title">Recent readings</h2>
         <p className="small muted">
-          Every Annotate run from every visitor is saved with its time, text and result, and listed here for everyone to
-          see{historyTotal > history.length ? ` (latest ${history.length} of ${historyTotal})` : ""}. Please don&apos;t
-          paste anything private. Click a run to open it.
+          Everything people paste here is saved with the time and shown below for everyone
+          {historyTotal > history.length ? ` (latest ${history.length} of ${historyTotal})` : ""}, so please don&apos;t
+          paste anything private. Tap one to open it.
         </p>
         {history.length === 0 ? (
-          <p className="small muted">No runs yet. The first Annotate will appear here.</p>
+          <p className="small muted">Nothing yet. Be the first!</p>
         ) : (
           <ul className="history">
             {history.map((h) => (
@@ -255,9 +261,8 @@ export function Playground({ presets }: { presets: Demo[] }) {
                     <span className={`history-status ${h.status}`}>
                       {h.status === "ok"
                         ? `${h.profile ? TYPE_LABEL[h.profile] : "Done"} · ${h.marks ?? 0} marks`
-                        : h.status === "refused" ? "Refused" : errorTitle(h.error)}
+                        : h.status === "refused" ? "Not marked (politics or war)" : errorTitle(h.error)}
                     </span>
-                    {h.ms !== undefined && <span className="muted">{(h.ms / 1000).toFixed(1)}s</span>}
                     {h.mine && <span className="pill">You</span>}
                   </span>
                   <span className="history-text">{h.text}</span>
@@ -275,12 +280,21 @@ function errorTitle(code?: string): string {
   switch (code) {
     case "access_code": return "Wrong access code";
     case "rate_limited": return "Slow down a little";
-    case "daily_limit": return "Daily limit reached";
+    case "daily_limit": return "Back tomorrow";
     case "too_long": return "Text is too long";
-    case "timeout": return "Muse Spark timed out";
-    case "disabled": return "Playground is off";
-    case "upstream": return "Meta Model API error";
-    default: return "Annotation failed";
+    case "timeout": return "That took too long";
+    case "disabled": return "Playground is resting";
+    default: return "Something went wrong";
+  }
+}
+
+/** Server messages are written for developers; readers get a plain sentence instead where it helps. */
+function friendlyError(code: string | undefined, message: string): string {
+  switch (code) {
+    case "timeout": return "Please try again, or try a shorter text.";
+    case "upstream": return "Mabarint couldn't reach Meta's AI just now. Please try again in a moment.";
+    case "daily_limit": return "Today's free readings are used up. The examples still work.";
+    default: return message;
   }
 }
 

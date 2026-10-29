@@ -25,7 +25,7 @@ const PAGES = [
   { href: "/docs#meanings", title: "Docs · One sentence", text: "Start here: one sentence, six meanings." },
   { href: "/docs#novel", title: "Docs · Novel", text: "Classic scenes with full notation." },
   { href: "/docs#news", title: "Docs · News", text: "Quotes carry emotion, the reporter stays neutral." },
-  { href: "/playground", title: "Playground", text: "Annotate your own text live with Muse Spark." },
+  { href: "/playground", title: "Playground", text: "Paste your own text and see how it should be read." },
 ];
 
 /**
