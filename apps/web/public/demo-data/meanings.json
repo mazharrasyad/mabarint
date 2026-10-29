@@ -1,0 +1,251 @@
+{
+  "sentence": "I didn't say she stole it.",
+  "variants": [
+    {
+      "id": "i",
+      "expect": "I",
+      "context": "Everyone at the table turned to look at Tom when the manager mentioned the missing laptop. Tom raised both hands. \"Whoa, don't look at me. That accusation came from Priya. She said it, not me.\"",
+      "annotation": {
+        "version": "0.1",
+        "profile": "novel",
+        "lang": "en",
+        "text": "I didn't say she stole it.",
+        "tone": "defensive",
+        "spans": [
+          {
+            "type": "utterance",
+            "start": 0,
+            "end": 26,
+            "quote": "I didn't say she stole it.",
+            "reason": "Tom deflects blame to Priya defensively",
+            "emotion": "fear",
+            "speaker": "Tom",
+            "intensity": 0.7
+          },
+          {
+            "type": "stress",
+            "start": 0,
+            "end": 1,
+            "quote": "I",
+            "reason": "Contrasts Tom with Priya as speaker",
+            "level": 2
+          }
+        ],
+        "meta": {
+          "model": "muse-spark-1.3",
+          "calls": 1,
+          "repairs": 0,
+          "ms": 10418,
+          "dropped": 0,
+          "issues": [],
+          "cached": true
+        }
+      }
+    },
+    {
+      "id": "didnt",
+      "expect": "didn't",
+      "context": "\"You told the whole office that Lena stole the laptop!\" Priya shouted. Tom shook his head hard, his voice rising. \"That's a lie, and you know it.\"",
+      "annotation": {
+        "version": "0.1",
+        "profile": "novel",
+        "lang": "en",
+        "text": "I didn't say she stole it.",
+        "tone": "defensive",
+        "spans": [
+          {
+            "type": "utterance",
+            "start": 0,
+            "end": 26,
+            "quote": "I didn't say she stole it.",
+            "reason": "Flatly denies telling office Lena stole laptop",
+            "emotion": "anger",
+            "speaker": "Tom",
+            "intensity": 0.8
+          },
+          {
+            "type": "stress",
+            "start": 2,
+            "end": 8,
+            "quote": "didn't",
+            "reason": "Flat denial of whole accusation, not a correction",
+            "level": 2
+          }
+        ],
+        "meta": {
+          "model": "muse-spark-1.3",
+          "calls": 1,
+          "repairs": 0,
+          "ms": 9167,
+          "dropped": 0,
+          "issues": [],
+          "cached": true
+        }
+      }
+    },
+    {
+      "id": "say",
+      "expect": "say",
+      "context": "\"So you think Lena stole it?\" Priya asked. Tom shrugged and lowered his voice. \"I'm not stupid. I only raised an eyebrow when her name came up. Read into that what you like.\"",
+      "annotation": {
+        "version": "0.1",
+        "profile": "novel",
+        "lang": "en",
+        "text": "I didn't say she stole it.",
+        "tone": "defensive",
+        "spans": [
+          {
+            "type": "utterance",
+            "start": 0,
+            "end": 26,
+            "quote": "I didn't say she stole it.",
+            "reason": "Calm denial that implies suspicion without stating it",
+            "emotion": "neutral",
+            "speaker": "Tom",
+            "intensity": 0.5
+          },
+          {
+            "type": "stress",
+            "start": 9,
+            "end": 12,
+            "quote": "say",
+            "reason": "Contrasts saying with implying from context",
+            "level": 2
+          }
+        ],
+        "meta": {
+          "model": "muse-spark-1.3",
+          "calls": 1,
+          "repairs": 0,
+          "ms": 7940,
+          "dropped": 0,
+          "issues": [],
+          "cached": true
+        }
+      }
+    },
+    {
+      "id": "she",
+      "expect": "she",
+      "context": "\"You accused Lena of stealing the laptop,\" Priya said. Tom leaned forward. \"Listen carefully. I said someone on her team took it. Someone. Not Lena.\"",
+      "annotation": {
+        "version": "0.1",
+        "profile": "novel",
+        "lang": "en",
+        "text": "I didn't say she stole it.",
+        "tone": "defensive",
+        "spans": [
+          {
+            "type": "utterance",
+            "start": 0,
+            "end": 26,
+            "quote": "I didn't say she stole it.",
+            "reason": "Defensive correction of false accusation",
+            "emotion": "neutral",
+            "speaker": "Tom",
+            "intensity": 0.6
+          },
+          {
+            "type": "stress",
+            "start": 13,
+            "end": 16,
+            "quote": "she",
+            "reason": "Corrects who was accused, not Lena",
+            "level": 2
+          }
+        ],
+        "meta": {
+          "model": "muse-spark-1.3",
+          "calls": 1,
+          "repairs": 0,
+          "ms": 6566,
+          "dropped": 0,
+          "issues": [],
+          "cached": true
+        }
+      }
+    },
+    {
+      "id": "stole",
+      "expect": "stole",
+      "context": "\"You said Lena stole the laptop,\" Priya insisted. Tom sighed. \"She borrowed it on Friday without asking. That's rude, sure. But borrowing isn't a crime.\"",
+      "annotation": {
+        "version": "0.1",
+        "profile": "novel",
+        "lang": "en",
+        "text": "I didn't say she stole it.",
+        "tone": "defensive",
+        "spans": [
+          {
+            "type": "utterance",
+            "start": 0,
+            "end": 26,
+            "quote": "I didn't say she stole it.",
+            "reason": "Calm denial correcting Priya's misquote",
+            "emotion": "neutral",
+            "speaker": "Tom",
+            "intensity": 0.6
+          },
+          {
+            "type": "stress",
+            "start": 17,
+            "end": 22,
+            "quote": "stole",
+            "reason": "Contrasts stole with borrowed from context",
+            "level": 2
+          }
+        ],
+        "meta": {
+          "model": "muse-spark-1.3",
+          "calls": 1,
+          "repairs": 0,
+          "ms": 9209,
+          "dropped": 0,
+          "issues": [],
+          "cached": true
+        }
+      }
+    },
+    {
+      "id": "it",
+      "expect": "it",
+      "context": "\"You said Lena stole the laptop,\" Priya said. Tom pointed at the laptop on his desk. \"The laptop never left this room. What I said is that she stole the charger. The charger, not the laptop.\"",
+      "annotation": {
+        "version": "0.1",
+        "profile": "novel",
+        "lang": "en",
+        "text": "I didn't say she stole it.",
+        "tone": "defensive",
+        "spans": [
+          {
+            "type": "utterance",
+            "start": 0,
+            "end": 26,
+            "quote": "I didn't say she stole it.",
+            "reason": "Calm correction denying he named the laptop",
+            "emotion": "neutral",
+            "speaker": "Tom",
+            "intensity": 0.3
+          },
+          {
+            "type": "stress",
+            "start": 23,
+            "end": 25,
+            "quote": "it",
+            "reason": "Contrasts laptop with charger he actually named",
+            "level": 3
+          }
+        ],
+        "meta": {
+          "model": "muse-spark-1.3",
+          "calls": 1,
+          "repairs": 0,
+          "ms": 9112,
+          "dropped": 0,
+          "issues": [],
+          "cached": true
+        }
+      }
+    }
+  ]
+}

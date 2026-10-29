@@ -1,0 +1,134 @@
+{
+  "id": "news-library",
+  "title": "Riverside library reopens after flood repairs",
+  "credit": "Sample article written for Mabarint. Names and places are fictional.",
+  "profile": "news",
+  "text": "The Riverside Community Library reopened on Saturday, eight months after a burst water main flooded its ground floor. Volunteers rebuilt the children's corner and replaced more than four thousand books donated by residents.\n\n\"When we saw the queue outside this morning, we honestly cried,\" said head librarian Ana Torres. \"These kids waited all winter. Today they finally got their library back.\"\n\nEleven-year-old Sam Okafor was the first to borrow a book. \"I'm taking the dragon one,\" he said. \"The biggest one they have!\"\n\nThe library is open daily from 9 a.m. to 7 p.m.",
+  "annotation": {
+    "text": "The Riverside Community Library reopened on Saturday, eight months after a burst water main flooded its ground floor. Volunteers rebuilt the children's corner and replaced more than four thousand books donated by residents.\n\n\"When we saw the queue outside this morning, we honestly cried,\" said head librarian Ana Torres. \"These kids waited all winter. Today they finally got their library back.\"\n\nEleven-year-old Sam Okafor was the first to borrow a book. \"I'm taking the dragon one,\" he said. \"The biggest one they have!\"\n\nThe library is open daily from 9 a.m. to 7 p.m.",
+    "version": "0.1",
+    "profile": "news",
+    "lang": "en",
+    "tone": "neutral",
+    "spans": [
+      {
+        "type": "pause",
+        "start": 53,
+        "end": 53,
+        "length": "short"
+      },
+      {
+        "type": "pause",
+        "start": 117,
+        "end": 117,
+        "length": "long"
+      },
+      {
+        "type": "utterance",
+        "start": 226,
+        "end": 288,
+        "quote": "When we saw the queue outside this morning, we honestly cried,",
+        "reason": "Moved to tears by community turnout",
+        "emotion": "joy",
+        "speaker": "Ana Torres",
+        "intensity": 0.8
+      },
+      {
+        "type": "stress",
+        "start": 282,
+        "end": 287,
+        "quote": "cried",
+        "reason": "Emotional climax of her recollection",
+        "level": 2
+      },
+      {
+        "type": "pause",
+        "start": 321,
+        "end": 321,
+        "length": "short"
+      },
+      {
+        "type": "utterance",
+        "start": 323,
+        "end": 395,
+        "quote": "These kids waited all winter. Today they finally got their library back.",
+        "reason": "Celebrates children's long wait ending",
+        "emotion": "joy",
+        "speaker": "Ana Torres",
+        "intensity": 0.8
+      },
+      {
+        "type": "stress",
+        "start": 364,
+        "end": 371,
+        "quote": "finally",
+        "reason": "Highlights end of long wait",
+        "level": 2
+      },
+      {
+        "type": "pitch",
+        "start": 390,
+        "end": 395,
+        "quote": "back.",
+        "contour": "fall"
+      },
+      {
+        "type": "pause",
+        "start": 456,
+        "end": 456,
+        "length": "short"
+      },
+      {
+        "type": "utterance",
+        "start": 458,
+        "end": 484,
+        "quote": "I'm taking the dragon one,",
+        "reason": "Excited child announcing his choice",
+        "emotion": "joy",
+        "speaker": "Sam Okafor",
+        "intensity": 0.7
+      },
+      {
+        "type": "stress",
+        "start": 473,
+        "end": 479,
+        "quote": "dragon",
+        "reason": "Highlights chosen book type",
+        "level": 2
+      },
+      {
+        "type": "utterance",
+        "start": 496,
+        "end": 522,
+        "quote": "The biggest one they have!",
+        "reason": "Childish pride and excitement",
+        "emotion": "joy",
+        "speaker": "Sam Okafor",
+        "intensity": 0.8
+      },
+      {
+        "type": "pitch",
+        "start": 496,
+        "end": 522,
+        "quote": "The biggest one they have!",
+        "contour": "rise-fall"
+      },
+      {
+        "type": "stress",
+        "start": 500,
+        "end": 507,
+        "quote": "biggest",
+        "reason": "Emphasizes size as proud boast",
+        "level": 2
+      }
+    ],
+    "meta": {
+      "model": "muse-spark-1.3",
+      "calls": 4,
+      "repairs": 0,
+      "ms": 14362,
+      "dropped": 0,
+      "issues": []
+    }
+  }
+}

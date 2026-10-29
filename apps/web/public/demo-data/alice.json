@@ -1,0 +1,134 @@
+{
+  "id": "alice",
+  "title": "A Mad Tea-Party",
+  "credit": "Lewis Carroll, Alice's Adventures in Wonderland (1865), chapter VII. Public domain.",
+  "profile": "novel",
+  "text": "\"Have some wine,\" the March Hare said in an encouraging tone.\n\nAlice looked all round the table, but there was nothing on it but tea. \"I don't see any wine,\" she remarked.\n\n\"There isn't any,\" said the March Hare.\n\n\"Then it wasn't very civil of you to offer it,\" said Alice angrily.\n\n\"It wasn't very civil of you to sit down without being invited,\" said the March Hare.",
+  "annotation": {
+    "text": "\"Have some wine,\" the March Hare said in an encouraging tone.\n\nAlice looked all round the table, but there was nothing on it but tea. \"I don't see any wine,\" she remarked.\n\n\"There isn't any,\" said the March Hare.\n\n\"Then it wasn't very civil of you to offer it,\" said Alice angrily.\n\n\"It wasn't very civil of you to sit down without being invited,\" said the March Hare.",
+    "version": "0.1",
+    "profile": "novel",
+    "lang": "en",
+    "tone": "indignant",
+    "spans": [
+      {
+        "type": "utterance",
+        "start": 1,
+        "end": 16,
+        "quote": "Have some wine,",
+        "reason": "Encouraging friendly invitation to drink",
+        "emotion": "joy",
+        "speaker": "March Hare",
+        "intensity": 0.6
+      },
+      {
+        "type": "stress",
+        "start": 11,
+        "end": 15,
+        "quote": "wine",
+        "reason": "Focus of the hospitality offer",
+        "level": 2
+      },
+      {
+        "type": "stress",
+        "start": 111,
+        "end": 118,
+        "quote": "nothing",
+        "reason": "Emphasizes absence versus offered wine",
+        "level": 2
+      },
+      {
+        "type": "pause",
+        "start": 133,
+        "end": 133,
+        "length": "short"
+      },
+      {
+        "type": "utterance",
+        "start": 134,
+        "end": 157,
+        "quote": "\"I don't see any wine,\"",
+        "reason": "Politely puzzled stating plain observation",
+        "emotion": "neutral",
+        "speaker": "Alice",
+        "intensity": 0.4
+      },
+      {
+        "type": "stress",
+        "start": 151,
+        "end": 155,
+        "quote": "wine",
+        "reason": "Highlights missing item she was offered",
+        "level": 2
+      },
+      {
+        "type": "utterance",
+        "start": 174,
+        "end": 190,
+        "quote": "There isn't any,",
+        "reason": "Bluntly confirms absence without apology",
+        "emotion": "neutral",
+        "speaker": "March Hare",
+        "intensity": 0.5
+      },
+      {
+        "type": "stress",
+        "start": 180,
+        "end": 185,
+        "quote": "isn't",
+        "reason": "Emphasizes flat denial of any wine",
+        "level": 2
+      },
+      {
+        "type": "utterance",
+        "start": 214,
+        "end": 261,
+        "quote": "\"Then it wasn't very civil of you to offer it,\"",
+        "reason": "Dialogue tag explicitly marks her tone as angry",
+        "emotion": "anger",
+        "speaker": "Alice",
+        "intensity": 0.7
+      },
+      {
+        "type": "stress",
+        "start": 235,
+        "end": 240,
+        "quote": "civil",
+        "reason": "Key moral judgment carrying her rebuke",
+        "level": 2
+      },
+      {
+        "type": "utterance",
+        "start": 284,
+        "end": 346,
+        "quote": "It wasn't very civil of you to sit down without being invited,",
+        "reason": "Retaliatory echo of Alice's charge about civility",
+        "emotion": "anger",
+        "speaker": "March Hare",
+        "intensity": 0.6
+      },
+      {
+        "type": "stress",
+        "start": 338,
+        "end": 346,
+        "quote": "invited,",
+        "reason": "Emphasizes the breach of manners",
+        "level": 2
+      },
+      {
+        "type": "pause",
+        "start": 346,
+        "end": 346,
+        "length": "short"
+      }
+    ],
+    "meta": {
+      "model": "muse-spark-1.3",
+      "calls": 5,
+      "repairs": 0,
+      "ms": 21545,
+      "dropped": 0,
+      "issues": []
+    }
+  }
+}

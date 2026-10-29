@@ -1,0 +1,173 @@
+{
+  "id": "home",
+  "title": "A phone call",
+  "credit": "Written for Mabarint",
+  "profile": "novel",
+  "text": "Mara read the message twice before she could breathe. \"No,\" she whispered. \"He was fine this morning.\"\n\nHer brother leaned against the door frame. \"Oh, wonderful,\" he muttered. \"Another family emergency. Just what I needed today.\"",
+  "annotation": {
+    "text": "Mara read the message twice before she could breathe. \"No,\" she whispered. \"He was fine this morning.\"\n\nHer brother leaned against the door frame. \"Oh, wonderful,\" he muttered. \"Another family emergency. Just what I needed today.\"",
+    "version": "0.1",
+    "profile": "novel",
+    "lang": "en",
+    "tone": "shocked, breathless dread",
+    "spans": [
+      {
+        "type": "utterance",
+        "start": 0,
+        "end": 53,
+        "quote": "Mara read the message twice before she could breathe.",
+        "reason": "Suspended breath signals dread and shock",
+        "emotion": "fear",
+        "speaker": "Narrator",
+        "intensity": 0.8
+      },
+      {
+        "type": "tempo",
+        "start": 5,
+        "end": 27,
+        "quote": "read the message twice",
+        "rate": "slow"
+      },
+      {
+        "type": "stress",
+        "start": 22,
+        "end": 27,
+        "quote": "twice",
+        "reason": "Marks disbelief needing a reread",
+        "level": 2
+      },
+      {
+        "type": "pause",
+        "start": 53,
+        "end": 53,
+        "length": "long"
+      },
+      {
+        "type": "volume",
+        "start": 54,
+        "end": 74,
+        "quote": "\"No,\" she whispered.",
+        "level": "whisper"
+      },
+      {
+        "type": "utterance",
+        "start": 54,
+        "end": 59,
+        "quote": "\"No,\"",
+        "reason": "Instinctive denial of shocking news",
+        "emotion": "fear",
+        "speaker": "Mara",
+        "intensity": 0.9
+      },
+      {
+        "type": "pause",
+        "start": 74,
+        "end": 74,
+        "length": "short"
+      },
+      {
+        "type": "utterance",
+        "start": 75,
+        "end": 102,
+        "quote": "\"He was fine this morning.\"",
+        "reason": "Clings to normal morning in disbelief",
+        "emotion": "surprise",
+        "speaker": "Mara",
+        "intensity": 0.8
+      },
+      {
+        "type": "stress",
+        "start": 83,
+        "end": 87,
+        "quote": "fine",
+        "reason": "Contrasts healthy morning with bad news",
+        "level": 2
+      },
+      {
+        "type": "pitch",
+        "start": 88,
+        "end": 101,
+        "quote": "this morning.",
+        "contour": "fall"
+      },
+      {
+        "type": "pause",
+        "start": 146,
+        "end": 146,
+        "length": "short"
+      },
+      {
+        "type": "utterance",
+        "start": 148,
+        "end": 162,
+        "quote": "Oh, wonderful,",
+        "reason": "Mock delight responds to tension after Mara's fear",
+        "emotion": "sarcasm",
+        "speaker": "brother",
+        "intensity": 0.9
+      },
+      {
+        "type": "pitch",
+        "start": 148,
+        "end": 162,
+        "quote": "Oh, wonderful,",
+        "contour": "rise-fall"
+      },
+      {
+        "type": "volume",
+        "start": 148,
+        "end": 162,
+        "quote": "Oh, wonderful,",
+        "level": "soft"
+      },
+      {
+        "type": "stress",
+        "start": 152,
+        "end": 161,
+        "quote": "wonderful",
+        "reason": "Carries sarcastic mock enthusiasm opposite to feeling",
+        "level": 3
+      },
+      {
+        "type": "utterance",
+        "start": 178,
+        "end": 229,
+        "quote": "Another family emergency. Just what I needed today.",
+        "reason": "Dismissive sarcasm masks worry and annoyance",
+        "emotion": "sarcasm",
+        "speaker": "brother",
+        "intensity": 0.85
+      },
+      {
+        "type": "volume",
+        "start": 178,
+        "end": 229,
+        "quote": "Another family emergency. Just what I needed today.",
+        "level": "soft"
+      },
+      {
+        "type": "pitch",
+        "start": 204,
+        "end": 229,
+        "quote": "Just what I needed today.",
+        "contour": "rise-fall"
+      },
+      {
+        "type": "stress",
+        "start": 216,
+        "end": 222,
+        "quote": "needed",
+        "reason": "Highlights sarcastic complaint about timing",
+        "level": 2
+      }
+    ],
+    "meta": {
+      "model": "muse-spark-1.3",
+      "calls": 2,
+      "repairs": 0,
+      "ms": 22015,
+      "dropped": 0,
+      "issues": []
+    }
+  }
+}

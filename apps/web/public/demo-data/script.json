@@ -1,0 +1,71 @@
+{
+  "id": "script",
+  "title": "Bedtime story opening",
+  "credit": "Written for Mabarint",
+  "profile": "script",
+  "text": "Once upon a time, in a village at the edge of a very dark forest, there lived a girl who was afraid of nothing. Nothing at all. Until the night the lanterns went out.",
+  "annotation": {
+    "text": "Once upon a time, in a village at the edge of a very dark forest, there lived a girl who was afraid of nothing. Nothing at all. Until the night the lanterns went out.",
+    "version": "0.1",
+    "profile": "script",
+    "lang": "en",
+    "tone": "warm storytelling with growing suspense",
+    "spans": [
+      {
+        "type": "tempo",
+        "start": 0,
+        "end": 65,
+        "quote": "Once upon a time, in a village at the edge of a very dark forest,",
+        "rate": "slow"
+      },
+      {
+        "type": "pause",
+        "start": 17,
+        "end": 17,
+        "length": "short"
+      },
+      {
+        "type": "stress",
+        "start": 53,
+        "end": 57,
+        "quote": "dark",
+        "reason": "Highlights threatening forest setting",
+        "level": 2
+      },
+      {
+        "type": "pause",
+        "start": 65,
+        "end": 65,
+        "length": "short"
+      },
+      {
+        "type": "pause",
+        "start": 127,
+        "end": 127,
+        "length": "long"
+      },
+      {
+        "type": "tempo",
+        "start": 128,
+        "end": 166,
+        "quote": "Until the night the lanterns went out.",
+        "rate": "slow"
+      },
+      {
+        "type": "pitch",
+        "start": 128,
+        "end": 166,
+        "quote": "Until the night the lanterns went out.",
+        "contour": "fall"
+      }
+    ],
+    "meta": {
+      "model": "muse-spark-1.3",
+      "calls": 1,
+      "repairs": 0,
+      "ms": 16986,
+      "dropped": 0,
+      "issues": []
+    }
+  }
+}

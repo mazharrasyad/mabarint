@@ -1,0 +1,227 @@
+{
+  "id": "pride",
+  "title": "Netherfield Park is let at last",
+  "credit": "Jane Austen, Pride and Prejudice (1813), chapter 1. Public domain.",
+  "profile": "novel",
+  "text": "\"My dear Mr. Bennet,\" said his lady to him one day, \"have you heard that Netherfield Park is let at last?\"\n\nMr. Bennet replied that he had not.\n\n\"But it is,\" returned she; \"for Mrs. Long has just been here, and she told me all about it.\"\n\nMr. Bennet made no answer.\n\n\"Do you not want to know who has taken it?\" cried his wife impatiently.\n\n\"You want to tell me, and I have no objection to hearing it.\"",
+  "annotation": {
+    "text": "\"My dear Mr. Bennet,\" said his lady to him one day, \"have you heard that Netherfield Park is let at last?\"\n\nMr. Bennet replied that he had not.\n\n\"But it is,\" returned she; \"for Mrs. Long has just been here, and she told me all about it.\"\n\nMr. Bennet made no answer.\n\n\"Do you not want to know who has taken it?\" cried his wife impatiently.\n\n\"You want to tell me, and I have no objection to hearing it.\"",
+    "version": "0.1",
+    "profile": "novel",
+    "lang": "en",
+    "tone": "eager, bustling curiosity",
+    "spans": [
+      {
+        "type": "utterance",
+        "start": 1,
+        "end": 20,
+        "quote": "My dear Mr. Bennet,",
+        "reason": "Affectionate but eager address to husband",
+        "emotion": "tenderness",
+        "speaker": "Mrs. Bennet",
+        "intensity": 0.6
+      },
+      {
+        "type": "pause",
+        "start": 51,
+        "end": 51,
+        "length": "short"
+      },
+      {
+        "type": "utterance",
+        "start": 53,
+        "end": 105,
+        "quote": "have you heard that Netherfield Park is let at last?",
+        "reason": "Eager excitement sharing awaited news",
+        "emotion": "joy",
+        "speaker": "Mrs. Bennet",
+        "intensity": 0.8
+      },
+      {
+        "type": "stress",
+        "start": 73,
+        "end": 89,
+        "quote": "Netherfield Park",
+        "reason": "Key news, new information",
+        "level": 2
+      },
+      {
+        "type": "stress",
+        "start": 97,
+        "end": 105,
+        "quote": "at last?",
+        "reason": "Marks long-awaited relief",
+        "level": 2
+      },
+      {
+        "type": "pitch",
+        "start": 97,
+        "end": 105,
+        "quote": "at last?",
+        "contour": "rise"
+      },
+      {
+        "type": "utterance",
+        "start": 108,
+        "end": 143,
+        "quote": "Mr. Bennet replied that he had not.",
+        "reason": "Dry flat reply showing indifference",
+        "emotion": "neutral",
+        "speaker": "Mr. Bennet",
+        "intensity": 0.2
+      },
+      {
+        "type": "stress",
+        "start": 139,
+        "end": 143,
+        "quote": "not.",
+        "reason": "Emphasizes flat denial of hearing news",
+        "level": 2
+      },
+      {
+        "type": "utterance",
+        "start": 146,
+        "end": 156,
+        "quote": "But it is,",
+        "reason": "Triumphant insistence correcting her husband",
+        "emotion": "joy",
+        "speaker": "Mrs. Bennet",
+        "intensity": 0.7
+      },
+      {
+        "type": "stress",
+        "start": 153,
+        "end": 155,
+        "quote": "is",
+        "reason": "Contrasts husband's doubt, insists it is let",
+        "level": 2
+      },
+      {
+        "type": "utterance",
+        "start": 173,
+        "end": 236,
+        "quote": "for Mrs. Long has just been here, and she told me all about it.",
+        "reason": "Eager gossip justifying her news",
+        "emotion": "joy",
+        "speaker": "Mrs. Bennet",
+        "intensity": 0.7
+      },
+      {
+        "type": "pause",
+        "start": 206,
+        "end": 206,
+        "length": "short"
+      },
+      {
+        "type": "stress",
+        "start": 223,
+        "end": 226,
+        "quote": "all",
+        "reason": "Emphasizes completeness of her news",
+        "level": 2
+      },
+      {
+        "type": "pitch",
+        "start": 227,
+        "end": 236,
+        "quote": "about it.",
+        "contour": "fall"
+      },
+      {
+        "type": "utterance",
+        "start": 239,
+        "end": 265,
+        "quote": "Mr. Bennet made no answer.",
+        "reason": "Deadpan contrast to her excitement",
+        "emotion": "neutral",
+        "speaker": "narrator",
+        "intensity": 0.3
+      },
+      {
+        "type": "stress",
+        "start": 255,
+        "end": 257,
+        "quote": "no",
+        "reason": "Marks his deliberate silence",
+        "level": 2
+      },
+      {
+        "type": "pause",
+        "start": 265,
+        "end": 265,
+        "length": "long"
+      },
+      {
+        "type": "utterance",
+        "start": 268,
+        "end": 309,
+        "quote": "Do you not want to know who has taken it?",
+        "reason": "She cries out impatiently at his silence",
+        "emotion": "anger",
+        "speaker": "Mrs. Bennet",
+        "intensity": 0.7
+      },
+      {
+        "type": "volume",
+        "start": 268,
+        "end": 309,
+        "quote": "Do you not want to know who has taken it?",
+        "level": "loud"
+      },
+      {
+        "type": "stress",
+        "start": 275,
+        "end": 278,
+        "quote": "not",
+        "reason": "Marks disbelief at his lack of curiosity",
+        "level": 2
+      },
+      {
+        "type": "pitch",
+        "start": 292,
+        "end": 309,
+        "quote": "who has taken it?",
+        "contour": "rise"
+      },
+      {
+        "type": "utterance",
+        "start": 341,
+        "end": 400,
+        "quote": "You want to tell me, and I have no objection to hearing it.",
+        "reason": "Dry deadpan deflection of his wife's impatience",
+        "emotion": "sarcasm",
+        "speaker": "Mr. Bennet",
+        "intensity": 0.5
+      },
+      {
+        "type": "stress",
+        "start": 341,
+        "end": 344,
+        "quote": "You",
+        "reason": "Contrasts her eagerness with his indifference",
+        "level": 2
+      },
+      {
+        "type": "pause",
+        "start": 361,
+        "end": 361,
+        "length": "short"
+      },
+      {
+        "type": "pitch",
+        "start": 389,
+        "end": 400,
+        "quote": "hearing it.",
+        "contour": "fall"
+      }
+    ],
+    "meta": {
+      "model": "muse-spark-1.3",
+      "calls": 6,
+      "repairs": 0,
+      "ms": 26885,
+      "dropped": 0,
+      "issues": []
+    }
+  }
+}

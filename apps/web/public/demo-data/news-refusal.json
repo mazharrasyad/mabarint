@@ -1,0 +1,20 @@
+{
+  "id": "news-refusal",
+  "title": "Out of scope: a political story",
+  "credit": "Sample text written for Mabarint to show the news profile's refusal.",
+  "profile": "news",
+  "text": "The opposition leader accused the government of rigging the election, and thousands of supporters marched on parliament demanding a recount. \"This vote was stolen,\" she told the crowd.",
+  "annotation": {
+    "text": "The opposition leader accused the government of rigging the election, and thousands of supporters marched on parliament demanding a recount. \"This vote was stolen,\" she told the crowd.",
+    "version": "0.1",
+    "profile": "news",
+    "refused": true,
+    "reason": "Passage describes alleged election rigging and political protest.",
+    "meta": {
+      "model": "muse-spark-1.3",
+      "calls": 1,
+      "repairs": 0,
+      "ms": 2825
+    }
+  }
+}

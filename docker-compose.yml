@@ -1,0 +1,12 @@
+# On the VPS: docker compose up -d --build   (env in /opt/mabarint/.env)
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    env_file: /opt/mabarint/.env
+    ports:
+      - "127.0.0.1:3200:3000"
+    volumes:
+      - cache:/data/cache
+volumes:
+  cache:

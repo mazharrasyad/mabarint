@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mazharrasyad/mabarint/schema/mabarint.schema.json",
+  "title": "Mabarint annotation document",
+  "description": "Offset-based prosody annotations for a plain-text passage (Mabarint v0.1). Offsets are UTF-16 code unit indices into `text`, [start, end).",
+  "type": "object",
+  "oneOf": [
+    { "$ref": "#/$defs/annotation" },
+    { "$ref": "#/$defs/refusal" }
+  ],
+  "$defs": {
+    "annotation": {
+      "type": "object",
+      "required": ["version", "profile", "lang", "spans"],
+      "properties": {
+        "version": { "const": "0.1" },
+        "profile": { "$ref": "#/$defs/profile" },
+        "lang": { "type": "string", "minLength": 2 },
+        "text": { "type": "string", "description": "The annotated passage. Optional when the host already has the text." },
+        "tone": { "type": "string", "description": "Overall mood of the passage, one or two words." },
+        "spans": { "type": "array", "items": { "$ref": "#/$defs/span" } },
+        "meta": {
+          "type": "object",
+          "description": "Engine diagnostics (model, attempts, repairs, dropped spans, timing).",
+          "additionalProperties": true
+        }
+      }
+    },
+    "refusal": {
+      "type": "object",
+      "required": ["refused", "reason"],
+      "properties": {
+        "version": { "const": "0.1" },
+        "profile": { "$ref": "#/$defs/profile" },
+        "refused": { "const": true },
+        "reason": { "type": "string" }
+      }
+    },
+    "profile": { "enum": ["novel", "news", "script"] },
+    "emotion": { "enum": ["neutral", "joy", "sadness", "anger", "fear", "surprise", "tenderness", "sarcasm"] },
+    "reason": { "type": "string", "maxLength": 140, "description": "At most 15 words, shown in the reader tooltip." },
+    "range": {
+      "type": "object",
+      "required": ["start", "end", "quote"],
+      "properties": {
+        "start": { "type": "integer", "minimum": 0 },
+        "end": { "type": "integer", "minimum": 0 },
+        "quote": { "type": "string", "description": "Exact substring text.slice(start, end)." }
+      }
+    },
+    "span": {
+      "type": "object",
+      "required": ["type", "start", "end"],
+      "discriminator": { "propertyName": "type" },
+      "oneOf": [
+        {
+          "allOf": [{ "$ref": "#/$defs/range" }],
+          "properties": {
+            "type": { "const": "utterance" },
+            "speaker": { "type": "string" },
+            "emotion": { "$ref": "#/$defs/emotion" },
+            "intensity": { "type": "number", "minimum": 0, "maximum": 1 },
+            "reason": { "$ref": "#/$defs/reason" }
+          },
+          "required": ["emotion"]
+        },
+        {
+          "allOf": [{ "$ref": "#/$defs/range" }],
+          "properties": {
+            "type": { "const": "stress" },
+            "level": { "enum": [1, 2, 3] },
+            "reason": { "$ref": "#/$defs/reason" }
+          },
+          "required": ["level"]
+        },
+        {
+          "allOf": [{ "$ref": "#/$defs/range" }],
+          "properties": {
+            "type": { "const": "elongate" },
+            "level": { "enum": [1, 2, 3] },
+            "reason": { "$ref": "#/$defs/reason" }
+          },
+          "required": ["level"]
+        },
+        {
+          "properties": {
+            "type": { "const": "pause" },
+            "start": { "type": "integer", "minimum": 0 },
+            "end": { "type": "integer", "minimum": 0, "description": "Equal to start: a pause is a point." },
+            "length": { "enum": ["short", "long"] },
+            "reason": { "$ref": "#/$defs/reason" }
+          },
+          "required": ["length"]
+        },
+        {
+          "allOf": [{ "$ref": "#/$defs/range" }],
+          "properties": {
+            "type": { "const": "pitch" },
+            "contour": { "enum": ["rise", "fall", "rise-fall"] },
+            "reason": { "$ref": "#/$defs/reason" }
+          },
+          "required": ["contour"]
+        },
+        {
+          "allOf": [{ "$ref": "#/$defs/range" }],
+          "properties": {
+            "type": { "const": "tempo" },
+            "rate": { "enum": ["slow", "normal", "fast"] },
+            "reason": { "$ref": "#/$defs/reason" }
+          },
+          "required": ["rate"]
+        },
+        {
+          "allOf": [{ "$ref": "#/$defs/range" }],
+          "properties": {
+            "type": { "const": "volume" },
+            "level": { "enum": ["whisper", "soft", "normal", "loud", "shout"] },
+            "reason": { "$ref": "#/$defs/reason" }
+          },
+          "required": ["level"]
+        }
+      ]
+    }
+  }
+}

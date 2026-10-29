@@ -2,18 +2,176 @@
 
 > **Authors write plain text. Readers hear the voice.**
 
-Mabarint uses Meta's Muse Spark to read the context of plain text and add tajwid-like notation for intonation and emotion (stress, elongation, pitch, pause, tempo, volume, emotion), so any digital text platform can show readers how a passage should be read.
+Mabarint is a new reading format. It uses Meta's **Muse Spark** to read the context of plain text and add subtle, *tajwid-like* notation for intonation and emotion (stress, pauses, elongation, pitch, tempo, volume and emotion), so any digital text platform (novels, news, stories, scripts) can show readers **how** a passage should be read. Authors keep writing plain text and never touch the notation.
 
-Built during the Meta Global AI Developer Hackathon (Oct 27 - Nov 4, 2026).
+- **Live demo:** https://mazharrasyad.tech/mabarint (the live playground needs the judges' access code; every other page is open)
+- **Demo video:** _add link_
+- Built during the Meta Global AI Developer Hackathon, Oct 27 to Nov 4, 2026.
+
+---
+
+## The problem
+
+Plain text loses the voice. *"I didn't say she stole it"* has six different meanings depending on which word you lean on, and on a screen all six look the same. Authors only have bold and italics, readers guess the tone, and sarcasm, grief and hesitation get lost. This affects every reader, and especially English learners, people reading aloud to children, and people who rely on read-aloud tools.
+
+## The solution
+
+1. **Muse Spark reads the context:** dialogue tags, punctuation, repetition, contrast, scene mood, who is talking to whom, physical cues ("her voice cracked").
+2. **The engine verifies the output:** exact offsets are recomputed from quotes, the schema and reading rules are checked, and errors go back to Muse Spark for repair.
+3. **The renderer adds notation** to the original text, like tajwid marks in Qur'anic script: heavier weight for stress, `‧` and `‖` for pauses, wider spacing for drawn-out words, ↗ ↘ for pitch, and a soft coloured underline for emotion. Readers switch it **Off / Subtle / Full** and hover any mark to read *why* the AI placed it.
+
+## How it works
+
+```
+Plain text ──► [1] Annotation engine ──► [2] Mabarint JSON ──► [3] Renderer ──► Reader
+               Muse Spark + validate        open, offset-based     one <script> tag,
+               and repair loop + cache      format (v0.1)          words never changed
+```
+
+| Layer | Where | What it does |
+|---|---|---|
+| Engine | [`packages/engine`](packages/engine) | Splits text into paragraphs (keeping offsets) and annotates them in parallel, each with the preceding text as context. It validates every span (exact quote → offsets, enums, stress density of about 1 per 6 words, one emotion per utterance, news neutrality), repairs up to 2 rounds, then drops whatever still fails. Results are cached by SHA-256. |
+| Format | [`schema/mabarint.schema.json`](schema/mabarint.schema.json), [`packages/types`](packages/types) | 7 span types and 8 emotions. Offset-based, so the source text is never modified. |
+| Renderer | [`packages/renderer`](packages/renderer) | Flattens overlapping spans into runs and adds CSS for all 7 dimensions in light and dark mode. Off/Subtle/Full modes, accessible tooltips, a legend, and `data-mabarint` auto-init. 11 KB script. |
+| Demo site | [`apps/web`](apps/web) | Next.js app with the Home, One sentence, Novel, News, Playground and Docs pages, plus `POST /api/annotate` with live progress over server-sent events. |
+
+## Use of Meta models
+
+- **Muse Spark (`muse-spark-1.3`) through the Meta Model API**, called with the OpenAI SDK (Chat Completions, `response_format: json_object`).
+- **What Muse Spark does:** deep narrative reasoning (speaker, subtext, sarcasm vs sincerity, scene mood, contrastive focus). It returns structured spans with a reader-facing reason for each mark.
+- **Verifiable agent loop:** the engine never trusts the model's offsets or format blindly. Validation errors are sent back to Muse Spark as a repair prompt, up to 2 rounds.
+- **Reasoning effort as a product knob:**
+  - `low` for the live playground: about 5 seconds per paragraph.
+  - `medium` for the precomputed demo pages, where quality matters more than speed.
+
+## Notation guide
+
+| Dimension | Visual |
+|---|---|
+| Stress | Heavier weight (3 levels) |
+| Elongation | Wider letter spacing |
+| Pitch | Last word shifts up or down, with a small ↗ ↘ glyph |
+| Pause | `‧` short, `‖` long |
+| Tempo | Looser (slow) or tighter (fast) word spacing |
+| Volume | Faded for whisper/soft, larger for loud/shout |
+| Emotion | Soft underline: joy amber, sadness blue, anger red, fear purple, surprise teal, tenderness pink, **sarcasm dashed grey** (never colour alone) |
+
+**Subtle** mode shows stress and pauses only. **Full** shows everything.
 
 ## Quick start
 
 ```bash
 npm install
-cp .env.example .env   # fill in META_API_KEY, META_BASE_URL, META_MODEL
-npm run hello
-npm run annotate -- '"No," she whispered. "He was fine this morning."' novel grief
+cp .env.example .env        # set META_API_KEY
+npm run hello               # first Muse Spark call
+npm run annotate -- '"No," she whispered. "He was fine this morning."' novel
+npm test                    # engine + renderer unit tests
+npm run precompute          # regenerate apps/web/public/demo-data with Muse Spark
+npm run dev                 # http://localhost:3200/mabarint
 ```
 
+Render on any page:
+
+```html
+<script src="https://mazharrasyad.tech/mabarint/mabarint.js"></script>
+<div data-mabarint data-mabarint-src="/annotations/chapter-1.json" data-mabarint-controls>Plain text…</div>
+```
+
+```ts
+import { render } from "@mabarint/renderer";
+render(element, annotation, { intensity: "full" });
+```
+
+## Deployment and safety
+
+- Runs as a Docker container on a VPS behind nginx at `/mabarint` ([`Dockerfile`](Dockerfile), [`docker-compose.yml`](docker-compose.yml)).
+- `META_API_KEY` lives only in the server environment.
+- The demo pages use precomputed JSON, so they make **zero API calls**. Only the playground calls Muse Spark, and it is protected by:
+  - a judges' access code
+  - a 1,000-character input limit
+  - 10 requests per IP per 10 minutes
+  - a daily cap
+  - a cache
+  - a 90-second timeout
+  - a `PLAYGROUND_ENABLED` kill switch
+- **Content:** novel excerpts are public domain (Lewis Carroll 1865, Jane Austen 1813). The news articles and contexts are written for this project, and their names and places are fictional.
+
+## Built during the hackathon (Oct 27 to Nov 4, 2026)
+
+Everything in this repository was created during the event: the annotation schema, the engine with its validate-and-repair loop, the renderer library, the demo site and API, the precompute pipeline, and the demo texts. See the commit history.
+
+## Limitations and future work
+
+- English only for now; Indonesian is next.
+- The engine is precise with quotes but its reading is an interpretation. An **author review mode** to override marks is planned.
+- Next steps:
+  - Run on **Muse Spark Open** weights (Baseten/Modal) so platforms can self-host.
+  - A Chrome extension that annotates any page.
+  - A voice mode that derives spans from an author reading aloud.
+
 ## License
-MIT
+
+[MIT](LICENSE)
+
+---
+
+## Hackathon submission (form drafts)
+
+**Team Name:** Mabarint
+
+**Team Members:** Muhammad Azhar Rasyad (mazharrasyad)
+
+**Track:** Indie Developer
+
+**Problem statement:** Build for Your World
+
+**X post link (Most Viral):** _add after posting the demo_
+
+**Project Description:**
+Plain text loses the voice. "I didn't say she stole it" means six different things depending on the stressed word, yet on a screen every reading looks the same. Authors only have bold and italics, and readers (especially language learners and people reading aloud) have to guess tone, sarcasm and emotion.
+
+Mabarint is a new reading format: authors write plain text, and readers see how it should be read. Meta's Muse Spark reads the context of each passage (dialogue tags, punctuation, contrast, scene mood, who is speaking to whom) and returns structured prosody annotations. A verification engine recomputes offsets from exact quotes, checks the schema and reading rules, and sends errors back to Muse Spark to repair. A tiny renderer then adds tajwid-like notation to the original text on any web page: heavier weight for stress, pause marks, drawn-out spacing, pitch arrows and soft emotion underlines. Readers switch it Off, Subtle or Full and can hover any mark to read the AI's reason.
+
+Key features:
+- The "one sentence, many meanings" demo.
+- Novel and news profiles. The news profile keeps reporter narration neutral and refuses political content.
+- A live playground with step-by-step progress.
+- An open JSON schema and a one-line script-tag integration.
+
+Live demo: https://mazharrasyad.tech/mabarint
+
+**Public GitHub Repository:** https://github.com/mazharrasyad/mabarint
+
+**3-Minute Demo Video:** _add link_
+
+**Describe your use of Meta products:**
+- **Muse Spark** (`muse-spark-1.3`, Meta Model API, OpenAI-compatible Chat Completions with JSON mode) is the core of Mabarint's annotation engine. For every paragraph it receives the passage plus the preceding text, infers how a skilled narrator would read it (speaker, emotion, contrastive stress, pauses, pitch, tempo, volume), and returns spans with a short reason that readers see in tooltips.
+- **Verify-and-repair loop:** we wrap Muse Spark in a verifiable agent loop. The engine recomputes offsets from exact quotes, validates the schema and reading rules (stress density, one emotion per utterance, neutral news narration), and sends any errors back to Muse Spark to repair, up to two rounds.
+- **`reasoning_effort` as a product setting:** `low` for the live playground (about 5 s per paragraph), `medium` for the precomputed demo pages.
+- **Precomputed demos:** a precompute script runs every demo through the same engine, so the demo pages are instant and cost nothing per visit.
+
+**Why are Meta's models important to your solution?**
+Annotating prosody is a reading-comprehension problem, not a keyword problem. Muse Spark has to:
+- work out who is speaking,
+- notice that "Oh, wonderful" after a flat tyre is sarcasm,
+- see that a denial in the next line moves the stress to "she" or to "stole",
+- carry a scene's mood across paragraphs.
+
+This needs strong long-context reasoning together with reliable structured output, which Muse Spark provides through JSON mode. The adjustable reasoning effort lets us trade depth for latency per use case. Because the format is open and the API is OpenAI-compatible, platforms can later move to Muse Spark Open weights and self-host for privacy and cost.
+
+**Feedback on Meta products:**
+- The OpenAI-compatible endpoint made the first call trivial: only the base URL and key changed. JSON mode worked together with `reasoning_effort` on Chat Completions.
+- `reasoning_effort` is a big lever, and the docs could highlight its cost impact more. On the same passage:
+
+  | Setting | Time | Completion tokens | Reasoning tokens |
+  |---|---|---|---|
+  | `low` | ~4.8 s | ~1.1k | ~950 |
+  | `medium` | ~9.5 s | ~2.2k | ~2.0k |
+
+  Reasoning tokens are billed as output.
+- Muse Spark copied quotes exactly and its character offsets were correct in our runs. We still recompute offsets server-side as a safety net.
+- Contrastive stress needed one explicit prompt rule. It went from 4 of 6 to 6 of 6 correct readings in the "one sentence" demo, which suggests the model follows precise linguistic instructions well.
+- The quickstart leads with the Responses API. A short note that Chat Completions with `response_format` is fully supported would help people porting existing code.
+
+**Feedback on partner technologies (Fireworks, Modal, Baseten):**
+Not used in this submission; all inference goes through the Meta Model API. Running the engine on Muse Spark Open via Baseten or Modal is the planned next step.

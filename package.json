@@ -1,20 +1,31 @@
 {
-  "name": "mabarint",
+  "name": "mabarint-monorepo",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "description": "Authors write plain text. Readers hear the voice.",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "scripts": {
-    "hello": "tsx src/hello.ts",
-    "annotate": "tsx src/annotate-cli.ts"
-  },
-  "dependencies": {
-    "dotenv": "^16.4.5",
-    "openai": "^4.77.0"
+    "hello": "tsx --env-file=.env scripts/hello.ts",
+    "annotate": "tsx --env-file=.env scripts/annotate-cli.ts",
+    "precompute": "tsx --env-file=.env scripts/precompute.ts",
+    "test": "tsx --test packages/engine/tests/*.test.ts packages/renderer/tests/*.test.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build:renderer": "npm run build -w @mabarint/renderer",
+    "build": "npm run build:renderer && npm run build -w @mabarint/web",
+    "dev": "npm run build:renderer && npm run dev -w @mabarint/web"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "@mabarint/engine": "0.1.0",
+    "openai": "^4.77.0"
   }
 }
