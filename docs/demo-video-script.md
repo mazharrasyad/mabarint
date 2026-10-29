@@ -1,6 +1,6 @@
 # Demo video script (3:00)
 
-Stage directions are in Indonesian; the narration (voice-over) is in English for the judges. The narration is about 420 words, roughly 140 words per minute.
+Stage directions are in Indonesian; the narration (voice-over) is in English for the judges. The narration is about 360 words (about 2:35 at 140 words per minute), which leaves room for the live Muse Spark wait.
 
 ## Persiapan sebelum rekam
 
