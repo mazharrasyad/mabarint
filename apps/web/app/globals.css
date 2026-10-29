@@ -220,7 +220,7 @@ th { font-weight: 650; }
 }
 
 /* Docs tabs */
-.docs-tabs { margin: 8px 0 24px; overflow-x: auto; }
+.docs-tabs { margin: 8px 0 24px; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
 .docs-tabs button { white-space: nowrap; font-size: 15.5px; }
 .narrow-panel { max-width: 760px; }
 .narrow-panel h3 { margin-top: 36px; }
