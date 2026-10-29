@@ -65,9 +65,9 @@ Tom kissed her cheek. "I brought your favourite cake."
 > Authors keep writing plain text. Mabarint adds reading marks, a little like tajwid in the Qur'an. One switch moves between Plain and Mabarint: stress, pauses, emotion, pitch, tempo and volume. Muse Spark reads the cues a human narrator would: the dialogue tag "said Alice angrily," the March Hare echoing her words back at her. So "civil" gets the stress, and her line gets a red anger underline. Hover any mark and you read Muse Spark's reason, written for the reader.
 
 ### 1:30–1:55 · News: emosi hanya di kutipan
-**Layar:** Docs, tab **News** (`/docs#news`). Tunjukkan artikel perpustakaan: kutipan bergaris (*cried*, *finally*), narasi wartawan polos. Scroll ke kartu terakhir (teks politik yang ditolak).
+**Layar:** Docs, tab **News** (`/docs#news`). Tunjukkan artikel perpustakaan: kutipan bergaris (*cried*, *finally*), narasi wartawan polos. Lalu scroll ke artikel toko roti untuk kontras emosi sedih. Jangan tampilkan kartu terakhir (contoh teks politik) supaya video tidak menyentuh topik politik.
 
-> News works differently. The people quoted carry emotion, like the librarian who "honestly cried," but the reporter's own words stay neutral. And political or war stories are refused outright.
+> News works differently. The people quoted carry emotion, like the librarian who "honestly cried," but the reporter's own words stay neutral. The same engine carries joy in one story and grief in the next, without ever dramatizing the facts.
 
 ### 1:55–2:35 · Playground: siapa saja bisa mencoba
 **Layar:** `/playground`.
