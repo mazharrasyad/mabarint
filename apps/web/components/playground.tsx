@@ -26,9 +26,10 @@ interface HistoryItem {
   marks?: number;
   ms?: number;
   result?: Result;
+  mine?: boolean;
 }
 
-/** A random id kept in this browser, so the server can list this visitor's own runs. */
+/** A random id kept in this browser, so the history can mark this visitor's own runs. */
 function browserId(): string {
   try {
     let id = localStorage.getItem(CLIENT_KEY);
@@ -55,6 +56,7 @@ export function Playground({ presets }: { presets: Demo[] }) {
   const startedAt = useRef(0);
   const [clientId, setClientId] = useState("anonymous");
   const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [historyTotal, setHistoryTotal] = useState(0);
 
   useEffect(() => {
     fetch(API).then((r) => r.json()).then(setConfig).catch(() => setConfig({ enabled: false, requiresCode: false, maxChars: 1000, model: "" }));
@@ -65,10 +67,12 @@ export function Playground({ presets }: { presets: Demo[] }) {
   }, []);
 
   function loadHistory(id = clientId) {
-    if (id === "anonymous") return;
     fetch(`${HISTORY_API}?client=${encodeURIComponent(id)}`)
       .then((r) => r.json())
-      .then((d) => setHistory(d.entries ?? []))
+      .then((d) => {
+        setHistory(d.entries ?? []);
+        setHistoryTotal(d.total ?? 0);
+      })
       .catch(() => { /* history is a convenience; the playground still works */ });
   }
 
@@ -233,13 +237,14 @@ export function Playground({ presets }: { presets: Demo[] }) {
       )}
 
       <section className="section" style={{ marginTop: 28 }} aria-labelledby="history-title">
-        <h2 id="history-title">Your history</h2>
+        <h2 id="history-title">History</h2>
         <p className="small muted">
-          Every time you click Annotate, the time and your text are saved on the server together with the result,
-          so you can come back to them. Only this browser can see its own list.
+          Every Annotate run from every visitor is saved with its time, text and result, and listed here for everyone to
+          see{historyTotal > history.length ? ` (latest ${history.length} of ${historyTotal})` : ""}. Please don&apos;t
+          paste anything private. Click a run to open it.
         </p>
         {history.length === 0 ? (
-          <p className="small muted">No runs yet. Your first Annotate will appear here.</p>
+          <p className="small muted">No runs yet. The first Annotate will appear here.</p>
         ) : (
           <ul className="history">
             {history.map((h) => (
@@ -253,6 +258,7 @@ export function Playground({ presets }: { presets: Demo[] }) {
                         : h.status === "refused" ? "Refused" : errorTitle(h.error)}
                     </span>
                     {h.ms !== undefined && <span className="muted">{(h.ms / 1000).toFixed(1)}s</span>}
+                    {h.mine && <span className="pill">You</span>}
                   </span>
                   <span className="history-text">{h.text}</span>
                 </button>

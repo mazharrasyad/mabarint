@@ -1,11 +1,10 @@
-import { listFor, validClientId } from "@/lib/history";
+import { listAll, validClientId } from "@/lib/history";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-/** The calling browser's own playground runs, newest first. */
+/** Every playground run, newest first. `client` only marks which runs are the caller's own. */
 export async function GET(req: Request) {
   const clientId = validClientId(new URL(req.url).searchParams.get("client"));
-  if (!clientId) return Response.json({ entries: [] });
-  return Response.json({ entries: await listFor(clientId) }, { headers: { "Cache-Control": "no-store" } });
+  return Response.json(await listAll(clientId), { headers: { "Cache-Control": "no-store" } });
 }

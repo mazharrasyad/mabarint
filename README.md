@@ -123,7 +123,7 @@ render(element, annotation, { intensity: "full" });
   - a cache
   - a 90-second timeout
   - a `PLAYGROUND_ENABLED` kill switch
-- **Playground history:** every click on Annotate is saved on the server as one JSON line (`HISTORY_FILE`, a Docker volume in production) with the time, the text, the detected type, the result or error, and a salted hash of the IP instead of the address. Each browser keeps a random id and sees only its own runs under *Your history*; the full log is read on the server:
+- **Playground history:** every click on Annotate is saved on the server as one JSON line (`HISTORY_FILE`, a Docker volume in production) with the time, the text, the detected type, the result or error, and a salted hash of the IP instead of the address. The Playground's *History* section lists the latest 50 runs from every visitor (newest first) and marks the viewer's own runs with *You*; the IP hash and browser id never leave the server. The full log is read on the server:
 
   ```bash
   docker exec mabarint-web-1 tail -n 20 /data/history/history.jsonl

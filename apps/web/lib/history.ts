@@ -52,24 +52,28 @@ export async function record(input: HistoryInput): Promise<void> {
   }
 }
 
-/** The latest runs of one visitor, newest first, without the IP hash. */
-export async function listFor(clientId: string, limit = 20): Promise<Array<Omit<HistoryEntry, "ipHash" | "clientId">>> {
+export type PublicEntry = Omit<HistoryEntry, "ipHash" | "clientId"> & { mine: boolean };
+
+/**
+ * The latest runs from every visitor, newest first. The IP hash and browser id
+ * never leave the server; `mine` marks the caller's own runs.
+ */
+export async function listAll(clientId: string | null, limit = 50): Promise<{ entries: PublicEntry[]; total: number }> {
   let raw = "";
   try {
     raw = await readFile(FILE, "utf8");
   } catch {
-    return [];
+    return { entries: [], total: 0 };
   }
-  const out: Array<Omit<HistoryEntry, "ipHash" | "clientId">> = [];
-  const lines = raw.split("\n");
-  for (let i = lines.length - 1; i >= 0 && out.length < limit; i--) {
-    if (!lines[i]) continue;
+  const lines = raw.split("\n").filter(Boolean);
+  const entries: PublicEntry[] = [];
+  for (let i = lines.length - 1; i >= 0 && entries.length < limit; i--) {
     try {
       const { ipHash: _ip, clientId: owner, ...entry } = JSON.parse(lines[i]) as HistoryEntry;
-      if (owner === clientId) out.push(entry);
+      entries.push({ ...entry, mine: clientId !== null && owner === clientId });
     } catch {
       // Skip a partially written line.
     }
   }
-  return out;
+  return { entries, total: lines.length };
 }

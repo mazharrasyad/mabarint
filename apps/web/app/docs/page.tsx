@@ -69,7 +69,7 @@ Accept: application/json            (or text/event-stream for live progress)
           <li><strong>Repair</strong>: send the errors back to Muse Spark, up to two rounds; spans that still fail are dropped.</li>
           <li><strong>Cache</strong> by SHA-256 of text, profile, context, schema version, model and prompt.</li>
         </ol>
-        <p className="small muted">Each run is saved on the server with its time, text and result (one JSON line per run, IP stored only as a salted hash); <code>GET /mabarint/api/history?client=&lt;browser id&gt;</code> returns a browser&apos;s own runs. The live playground is open to everyone and rate limited per IP and per day. A server can optionally require an access code (<code>PLAYGROUND_ACCESS_CODE</code>).</p>
+        <p className="small muted">Each run is saved on the server with its time, text and result (one JSON line per run, IP stored only as a salted hash); <code>GET /mabarint/api/history</code> returns the latest 50 runs from every visitor. The live playground is open to everyone and rate limited per IP and per day. A server can optionally require an access code (<code>PLAYGROUND_ACCESS_CODE</code>).</p>
       </section>
 
       <section className="section">
