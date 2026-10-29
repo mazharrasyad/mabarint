@@ -4,7 +4,7 @@
 //   npm run precompute -- alice   only ids containing "alice"
 import { mkdir, writeFile } from "node:fs/promises";
 import { createEngine } from "@mabarint/engine";
-import { HOME, MEANINGS, MEANINGS_SENTENCE, NEWS, NEWS_REFUSAL, NOVELS, SCRIPT, type DemoSource } from "./demo-sources";
+import { HOME, MEANINGS, MEANINGS_SENTENCE, NEWS, NOVELS, SCRIPT, type DemoSource } from "./demo-sources";
 
 const OUT = "apps/web/public/demo-data";
 const only = process.argv[2];
@@ -21,7 +21,7 @@ async function run(src: DemoSource) {
 }
 
 await mkdir(OUT, { recursive: true });
-await Promise.all([HOME, ...NOVELS, ...NEWS, NEWS_REFUSAL, SCRIPT].map(run));
+await Promise.all([HOME, ...NOVELS, ...NEWS, SCRIPT].map(run));
 
 if (!only || "meanings".includes(only)) {
   const variants = await Promise.all(MEANINGS.map(async (m) => {

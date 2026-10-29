@@ -56,7 +56,7 @@ Mabarint is a collaboration between two AI agents with clearly separate roles:
 Muse Spark was also part of the development loop. Every prompt and validation change was checked against the real model before it was committed:
 - Measuring `reasoning_effort` latency.
 - Tuning the contrastive-stress rule until the "one sentence, many meanings" demo went from 4 of 6 to 6 of 6 correct readings.
-- Confirming that the repair loop and the news refusal behave on real output.
+- Confirming that the repair loop and the news rules behave on real output.
 
 **Meta supports this pairing directly.** The Meta Model API exposes an Anthropic-format [Messages API](https://dev.meta.ai/docs/protocols/messages) at `https://api.meta.ai`. Meta's [coding agents guide](https://dev.meta.ai/docs/coding-agents) shows how to point Claude Code at it, so Claude Code's own agent loop runs on Meta's models:
 
@@ -184,7 +184,7 @@ Plain text loses the voice. "I didn't say she stole it" means six different thin
 
 Mabarint is a new reading format: authors write plain text, and readers see how it should be read. Meta's Muse Spark reads the context of each passage (dialogue tags, punctuation, contrast, scene mood, who is speaking to whom) and returns structured prosody annotations. A verification engine recomputes offsets from exact quotes, checks the schema and reading rules, and sends errors back to Muse Spark to repair. A tiny renderer then adds tajwid-like notation to the original text on any web page: heavier weight for stress, pause marks, drawn-out spacing, pitch arrows and soft emotion underlines. Readers switch between Plain and Mabarint and can hover any mark to read the AI's reason.
 
-The demo shows the same sentence in six different contexts, and Muse Spark moves the stress to the right word each time and explains why. Novel and news profiles show how the format adapts: in news, the people quoted carry emotion while the reporter's narration stays neutral, and political or war stories are refused. A live playground lets anyone paste their own text with no settings at all: Muse Spark first detects whether it is a story, news or a read-aloud script, and then readers watch each engine step (reading, validating, repairing) end in a clear success or error notice, and a short first-visit guide teaches readers the notation. For developers, the format is an open JSON schema and the renderer is a single script tag that works on any website.
+The demo shows the same sentence in six different contexts, and Muse Spark moves the stress to the right word each time and explains why. Novel and news profiles show how the format adapts: in news, the people quoted carry emotion while the reporter's narration stays neutral, so the facts are never dramatized. A live playground lets anyone paste their own text with no settings at all: Muse Spark first detects whether it is a story, news or a read-aloud script, and then readers watch each engine step (reading, validating, repairing) end in a clear success or error notice, and a short first-visit guide teaches readers the notation. For developers, the format is an open JSON schema and the renderer is a single script tag that works on any website.
 
 The live demo is open to everyone with no sign-up at https://mazharrasyad.tech/mabarint
 ```

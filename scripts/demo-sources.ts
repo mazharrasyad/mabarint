@@ -85,14 +85,6 @@ The building will be put up for sale next month.`,
   },
 ];
 
-export const NEWS_REFUSAL: DemoSource = {
-  id: "news-refusal",
-  title: "Out of scope: a political story",
-  credit: "Sample text written for Mabarint to show the news profile's refusal.",
-  profile: "news",
-  text: `The opposition leader accused the government of rigging the election, and thousands of supporters marched on parliament demanding a recount. "This vote was stolen," she told the crowd.`,
-};
-
 export const MEANINGS_SENTENCE = "I didn't say she stole it.";
 
 /** Same sentence, different preceding contexts: each should move the stress. */

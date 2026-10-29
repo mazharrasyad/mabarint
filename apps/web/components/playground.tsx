@@ -163,7 +163,7 @@ export function Playground({ presets }: { presets: Demo[] }) {
     setResult({ ...final, text: final.text ?? text });
     setSource("live");
     if ("refused" in final && final.refused) {
-      toast({ kind: "error", title: "We can't mark this one", body: "Mabarint doesn't add marks to political or war news." });
+      toast({ kind: "error", title: "We can't mark this one", body: "This topic is outside what Mabarint marks in news mode." });
     } else if ("spans" in final) {
       const type = final.meta?.detectedProfile ?? final.profile;
       toast({
@@ -232,7 +232,7 @@ export function Playground({ presets }: { presets: Demo[] }) {
           </div>
           <div className="card">
             {"refused" in result && result.refused ? (
-              <p className="notice refused"><strong>We can&apos;t mark this one.</strong> Mabarint doesn&apos;t add marks to political or war news.</p>
+              <p className="notice refused"><strong>We can&apos;t mark this one.</strong> This topic is outside what Mabarint marks in news mode.</p>
             ) : (
               <Annotated text={result.text ?? text} spans={"spans" in result ? result.spans : []} />
             )}
@@ -261,7 +261,7 @@ export function Playground({ presets }: { presets: Demo[] }) {
                     <span className={`history-status ${h.status}`}>
                       {h.status === "ok"
                         ? `${h.profile ? TYPE_LABEL[h.profile] : "Done"} · ${h.marks ?? 0} marks`
-                        : h.status === "refused" ? "Not marked (politics or war)" : errorTitle(h.error)}
+                        : h.status === "refused" ? "Not marked" : errorTitle(h.error)}
                     </span>
                     {h.mine && <span className="pill">You</span>}
                   </span>

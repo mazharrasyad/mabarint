@@ -64,14 +64,13 @@ export function NewsDemo() {
         <h2>News: the voices carry feeling, the reporter stays neutral</h2>
         <p className="lead">
           In the news profile, emotion and stress are only allowed inside quotations from sources. The reporter&apos;s
-          narration gets pauses and tempo only. The engine enforces this rule after Muse Spark answers, and political
-          or war stories are refused.
+          narration gets pauses and tempo only. The engine enforces this rule after Muse Spark answers, so the facts
+          are never dramatized.
         </p>
         <div className="toolbar"><IntensityToggle /></div>
         <div style={{ display: "grid", gap: 20 }}>
           <DemoCard demo={DEMOS.newsLibrary} />
           <DemoCard demo={DEMOS.newsBakery} />
-          <DemoCard demo={DEMOS.newsRefusal} />
         </div>
       </div>
     </IntensityProvider>

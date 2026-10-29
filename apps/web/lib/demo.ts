@@ -4,7 +4,6 @@ import alice from "@/public/demo-data/alice.json";
 import pride from "@/public/demo-data/pride.json";
 import newsLibrary from "@/public/demo-data/news-library.json";
 import newsBakery from "@/public/demo-data/news-bakery.json";
-import newsRefusal from "@/public/demo-data/news-refusal.json";
 import script from "@/public/demo-data/script.json";
 import meanings from "@/public/demo-data/meanings.json";
 
@@ -25,7 +24,6 @@ export const DEMOS = {
   pride: pride as Demo,
   newsLibrary: newsLibrary as Demo,
   newsBakery: newsBakery as Demo,
-  newsRefusal: newsRefusal as Demo,
   script: script as Demo,
 };
 
