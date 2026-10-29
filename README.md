@@ -33,7 +33,7 @@ Plain text ──► [1] Annotation engine ──► [2] Mabarint JSON ──►
 | Engine | [`packages/engine`](packages/engine) | Lets Muse Spark detect the type of text (story, news or read-aloud script) when the profile is `auto`, splits text into paragraphs (keeping offsets) and annotates them in parallel, each with the preceding text as context. It validates every span (exact quote → offsets, enums, stress density of about 1 per 6 words, one emotion per utterance, news neutrality), repairs up to 2 rounds, then drops whatever still fails. Results are cached by SHA-256. |
 | Format | [`schema/mabarint.schema.json`](schema/mabarint.schema.json), [`packages/types`](packages/types) | 7 span types and 8 emotions. Offset-based, so the source text is never modified. |
 | Renderer | [`packages/renderer`](packages/renderer) | Flattens overlapping spans into runs and adds CSS for all 7 dimensions in light and dark mode. Plain / Mabarint switch, accessible tooltips, a legend, and `data-mabarint` auto-init. 11 KB script. |
-| Demo site | [`apps/web`](apps/web) | Next.js app with the Home, One sentence, Novel, News, Playground and Docs pages, plus `POST /api/annotate` with live progress over server-sent events. |
+| Demo site | [`apps/web`](apps/web) | Next.js app with three pages in the navbar: Mabarint (home), Playground, and Docs, whose tabs hold the One sentence, Novel and News demos plus the developer docs. Also `GET /api/history` and `POST /api/annotate` with live progress over server-sent events. |
 
 ## Use of Meta models
 

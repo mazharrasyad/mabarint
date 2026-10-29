@@ -36,7 +36,7 @@ export default function Home() {
           <h2>One sentence, many meanings</h2>
           <p className="muted">
             The same seven words. Muse Spark reads what came before and moves the stress.{" "}
-            <Link href="/meanings">See all six readings →</Link>
+            <Link href="/docs#meanings">See all six readings →</Link>
           </p>
           <div className="grid-3">
             {preview.map((v) => {

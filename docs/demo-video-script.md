@@ -6,7 +6,7 @@ Stage directions are in Indonesian; the narration (voice-over) is in English for
 
 1. **Browser bersih:** gunakan jendela biasa (bukan incognito) di Chrome. Zoom 110–125% supaya teks terbaca di video. Sembunyikan bookmark bar.
 2. **Tutup popup Guide** sekali sebelum merekam, supaya tidak menghalangi di tengah video. Popup ini selalu muncul setiap kali halaman home dibuka.
-3. **Siapkan 6 tab** sesuai urutan: `/mabarint/meanings`, `/mabarint/novel`, `/mabarint/news`, `/mabarint/playground`, `/mabarint/docs`, `/mabarint` (home).
+3. **Siapkan 5 tab** sesuai urutan: `/mabarint/docs#meanings`, `/mabarint/docs#novel`, `/mabarint/docs#news`, `/mabarint/playground`, `/mabarint` (home). Navbar sekarang hanya **Mabarint · Playground · Docs**; One sentence, Novel dan News adalah tab di halaman Docs.
 4. **Playground:** terbuka untuk umum, tanpa kode akses. Pilih profil **Novel** sebelum merekam.
 5. **Teks live:**
    - **Latihan:** pakai teks B.
@@ -34,7 +34,7 @@ Tom kissed her cheek. "I brought your favourite cake."
 ## Alur dan narasi
 
 ### 0:00–0:20 · Hook: teks biasa kehilangan suara
-**Layar:** `/meanings` dalam mode **Plain**. Zoom ke kalimat *"I didn't say she stole it."*
+**Layar:** Docs, tab **One sentence** (`/docs#meanings`), dalam mode **Plain**. Zoom ke kalimat *"I didn't say she stole it."*
 
 > Read this sentence: "I didn't say she stole it." How should it sound? Lean on a different word and it means something completely different. Six meanings, and on a screen they all look exactly the same. Plain text loses the voice: the tone, the sarcasm, the pause before the bad news.
 
@@ -44,14 +44,14 @@ Tom kissed her cheek. "I brought your favourite cake."
 > This is Mabarint. We give Meta's Muse Spark the same sentence six times, each with a different story before it. Every time, Muse Spark moves the stress to the right word: I, didn't, say, she, stole, it. And it explains why. Here: "Corrects who was accused, not Lena." The words never change. Only the notation does.
 
 ### 0:50–1:35 · Novel: membaca dengan telinga
-**Layar:** `/novel`, adegan *A Mad Tea-Party*.
+**Layar:** Docs, tab **Novel** (`/docs#novel`), adegan *A Mad Tea-Party*.
 1. Mulai di **Plain**, lalu klik **Mabarint**: kata tebal, jeda, garis bawah emosi, panah nada, dan tempo muncul sekaligus.
 2. Hover kata **civil**, lalu kalimat Alice yang bergaris merah.
 
 > Authors keep writing plain text. Mabarint adds marks, like tajwid in Qur'anic script. One switch moves between the plain text and the Mabarint reading, with stress, pauses, emotion, pitch, tempo and volume. Muse Spark reads the cues a human narrator would: the dialogue tag "said Alice angrily," the March Hare echoing her words back at her. So "civil" gets the stress, and her line gets a red anger underline. Hover any mark and you read Muse Spark's reason, written for the reader. It works the same on Jane Austen, where every polite line has an edge.
 
 ### 1:35–2:00 · News: emosi hanya di kutipan
-**Layar:** `/news`. Tunjukkan artikel perpustakaan: kutipan bergaris (*cried*, *finally*), narasi wartawan polos. Scroll ke kartu terakhir (refusal).
+**Layar:** Docs, tab **News** (`/docs#news`). Tunjukkan artikel perpustakaan: kutipan bergaris (*cried*, *finally*), narasi wartawan polos. Scroll ke kartu terakhir (refusal).
 
 > News has its own profile. The people quoted carry emotion, like the librarian who "honestly cried," but the reporter's narration stays neutral. The engine enforces that rule after the model answers. And political or war stories are refused outright.
 
@@ -60,7 +60,7 @@ Tom kissed her cheek. "I brought your favourite cake."
 1. Tunjukkan langkah progres: *Detected: story (novel profile)*, *Muse Spark is reading the context*, *Validating offsets, schema and reading rules*.
 2. Tunjukkan notifikasi ✓ hijau, lalu hasilnya.
 3. Klik tab **Mabarint JSON** dan scroll sebentar.
-4. Pindah ke `/docs` dan tunjukkan snippet `<script>` di bagian 1.
+4. Pindah ke Docs, tab **Developers** (`/docs#developers`), dan tunjukkan snippet `<script>` di bagian 1.
 
 > Here is a live run. No settings: Muse Spark first detects that this is a story, not news or a script. Then it reads each paragraph with the text before it as context. Then our engine checks every span: exact quotes, offsets, the schema, the stress density, and sends any errors back to Muse Spark to repair. The output is an open, offset-based JSON format. Any platform can render it with one script tag.
 

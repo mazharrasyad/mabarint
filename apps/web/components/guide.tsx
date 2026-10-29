@@ -22,9 +22,9 @@ const MARKS = [
 ];
 
 const PAGES = [
-  { href: "/meanings", title: "One sentence", text: "Start here: one sentence, six meanings." },
-  { href: "/novel", title: "Novel", text: "Classic scenes with full notation." },
-  { href: "/news", title: "News", text: "Quotes carry emotion, the reporter stays neutral." },
+  { href: "/docs#meanings", title: "Docs · One sentence", text: "Start here: one sentence, six meanings." },
+  { href: "/docs#novel", title: "Docs · Novel", text: "Classic scenes with full notation." },
+  { href: "/docs#news", title: "Docs · News", text: "Quotes carry emotion, the reporter stays neutral." },
   { href: "/playground", title: "Playground", text: "Annotate your own text live with Muse Spark." },
 ];
 
@@ -140,7 +140,7 @@ export function Guide() {
               <button type="button" className="btn ghost" onClick={close}>Skip</button>
             )}
             {last ? (
-              <Link href="/meanings" className="btn" onClick={close}>Start with One sentence</Link>
+              <Link href="/docs#meanings" className="btn" onClick={close}>Start with One sentence</Link>
             ) : (
               <button type="button" className="btn" onClick={() => setStep(step + 1)} autoFocus>Next</button>
             )}
