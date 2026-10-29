@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Annotated, IntensityProvider, IntensityToggle } from "@/components/reader";
 import { DEMOS } from "@/lib/demo";
@@ -27,10 +28,14 @@ const PAGES = [
   { href: "/playground", title: "Playground", text: "Annotate your own text live with Muse Spark." },
 ];
 
-/** First-visit tutorial. Opens once per browser; the Guide button reopens it. */
+/**
+ * Tutorial popup. Opens every time the home page is opened, and on the first
+ * visit to any other page; the Guide button reopens it anywhere.
+ */
 export function Guide() {
   const ref = useRef<HTMLDialogElement>(null);
   const [step, setStep] = useState(0);
+  const path = usePathname();
 
   const open = () => {
     setStep(0);
@@ -44,8 +49,8 @@ export function Guide() {
   useEffect(() => {
     let seen = false;
     try { seen = localStorage.getItem(SEEN_KEY) === "1"; } catch { /* storage blocked */ }
-    if (!seen) open();
-  }, []);
+    if (path === "/" || !seen) open();
+  }, [path]);
 
   const steps = [
     {
