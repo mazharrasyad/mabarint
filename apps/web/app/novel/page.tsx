@@ -12,7 +12,7 @@ export default function NovelPage() {
         <p className="eyebrow">Demo · novel profile</p>
         <h1>Classic novels, read aloud in your head</h1>
         <p className="lead">
-          Two public-domain scenes full of politeness that is not quite polite. Switch between Off, Subtle and Full,
+          Two public-domain scenes full of politeness that is not quite polite. Switch between Plain and Mabarint,
           and hover a marked word to read Muse Spark&apos;s reasoning.
         </p>
         <div className="toolbar"><IntensityToggle /></div>

@@ -82,12 +82,12 @@ export function Guide() {
       ),
     },
     {
-      title: "Choose how much to see",
+      title: "Switch between Plain and Mabarint",
       body: (
         <IntensityProvider>
           <p>
-            Use the <strong>Off / Subtle / Full</strong> switch on every page. Subtle shows only stress and pauses.
-            Try it here, then <strong>hover or tap a marked word</strong> to read why Muse Spark marked it.
+            Every page has a <strong>Plain / Mabarint</strong> switch: Plain shows the original text, Mabarint adds the
+            reading marks. Try it here, then <strong>hover or tap a marked word</strong> to read why Muse Spark marked it.
           </p>
           <div className="guide-sample">
             <div style={{ marginBottom: 12 }}><IntensityToggle /></div>

@@ -34,15 +34,15 @@ export default function DocsPage() {
 </div>
 
 <!-- annotate on load through the engine -->
-<div data-mabarint="novel" data-mabarint-intensity="subtle">"No," she whispered.</div>`}</pre>
+<div data-mabarint="novel">"No," she whispered.</div>`}</pre>
       </section>
 
       <section className="section">
         <h2>2. Renderer API</h2>
         <pre>{`import { render, setIntensity, unrender } from "@mabarint/renderer";
 
-render(element, annotation, { intensity: "full" }); // "off" | "subtle" | "full"
-setIntensity(element, "subtle");                    // cheap attribute switch
+render(element, annotation, { intensity: "full" }); // "full" = Mabarint, "off" = plain text
+setIntensity(element, "off");                       // cheap attribute switch
 unrender(element);                                  // back to the original plain text`}</pre>
         <p className="small muted">
           Overlapping spans are flattened into runs that carry every covering class, so the DOM never needs crossing

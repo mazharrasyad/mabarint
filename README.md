@@ -18,7 +18,7 @@ Plain text loses the voice. *"I didn't say she stole it"* has six different mean
 
 1. **Muse Spark reads the context:** dialogue tags, punctuation, repetition, contrast, scene mood, who is talking to whom, physical cues ("her voice cracked").
 2. **The engine verifies the output:** exact offsets are recomputed from quotes, the schema and reading rules are checked, and errors go back to Muse Spark for repair.
-3. **The renderer adds notation** to the original text, like tajwid marks in Qur'anic script: heavier weight for stress, `‧` and `‖` for pauses, wider spacing for drawn-out words, ↗ ↘ for pitch, and a soft coloured underline for emotion. Readers switch it **Off / Subtle / Full** and hover any mark to read *why* the AI placed it.
+3. **The renderer adds notation** to the original text, like tajwid marks in Qur'anic script: heavier weight for stress, `‧` and `‖` for pauses, wider spacing for drawn-out words, ↗ ↘ for pitch, and a soft coloured underline for emotion. Readers switch between **Plain** and **Mabarint** and hover any mark to read *why* the AI placed it.
 
 ## How it works
 
@@ -32,7 +32,7 @@ Plain text ──► [1] Annotation engine ──► [2] Mabarint JSON ──►
 |---|---|---|
 | Engine | [`packages/engine`](packages/engine) | Splits text into paragraphs (keeping offsets) and annotates them in parallel, each with the preceding text as context. It validates every span (exact quote → offsets, enums, stress density of about 1 per 6 words, one emotion per utterance, news neutrality), repairs up to 2 rounds, then drops whatever still fails. Results are cached by SHA-256. |
 | Format | [`schema/mabarint.schema.json`](schema/mabarint.schema.json), [`packages/types`](packages/types) | 7 span types and 8 emotions. Offset-based, so the source text is never modified. |
-| Renderer | [`packages/renderer`](packages/renderer) | Flattens overlapping spans into runs and adds CSS for all 7 dimensions in light and dark mode. Off/Subtle/Full modes, accessible tooltips, a legend, and `data-mabarint` auto-init. 11 KB script. |
+| Renderer | [`packages/renderer`](packages/renderer) | Flattens overlapping spans into runs and adds CSS for all 7 dimensions in light and dark mode. Plain / Mabarint switch, accessible tooltips, a legend, and `data-mabarint` auto-init. 11 KB script. |
 | Demo site | [`apps/web`](apps/web) | Next.js app with the Home, One sentence, Novel, News, Playground and Docs pages, plus `POST /api/annotate` with live progress over server-sent events. |
 
 ## Use of Meta models
@@ -86,7 +86,7 @@ In this build, Claude Code ran on Anthropic's Claude model, and the shipped prod
 | Volume | Faded for whisper/soft, larger for loud/shout |
 | Emotion | Soft underline: joy amber, sadness blue, anger red, fear purple, surprise teal, tenderness pink, **sarcasm dashed grey** (never colour alone) |
 
-**Subtle** mode shows stress and pauses only. **Full** shows everything.
+Readers switch between **Plain** (the original text) and **Mabarint** (all notation).
 
 ## Quick start
 
@@ -177,7 +177,7 @@ Build for Your World
 ```text
 Plain text loses the voice. "I didn't say she stole it" means six different things depending on the stressed word, yet on a screen every reading looks the same. Authors only have bold and italics, and readers (especially language learners and people reading aloud) have to guess tone, sarcasm and emotion.
 
-Mabarint is a new reading format: authors write plain text, and readers see how it should be read. Meta's Muse Spark reads the context of each passage (dialogue tags, punctuation, contrast, scene mood, who is speaking to whom) and returns structured prosody annotations. A verification engine recomputes offsets from exact quotes, checks the schema and reading rules, and sends errors back to Muse Spark to repair. A tiny renderer then adds tajwid-like notation to the original text on any web page: heavier weight for stress, pause marks, drawn-out spacing, pitch arrows and soft emotion underlines. Readers switch it Off, Subtle or Full and can hover any mark to read the AI's reason.
+Mabarint is a new reading format: authors write plain text, and readers see how it should be read. Meta's Muse Spark reads the context of each passage (dialogue tags, punctuation, contrast, scene mood, who is speaking to whom) and returns structured prosody annotations. A verification engine recomputes offsets from exact quotes, checks the schema and reading rules, and sends errors back to Muse Spark to repair. A tiny renderer then adds tajwid-like notation to the original text on any web page: heavier weight for stress, pause marks, drawn-out spacing, pitch arrows and soft emotion underlines. Readers switch between Plain and Mabarint and can hover any mark to read the AI's reason.
 
 The demo shows the same sentence in six different contexts, and Muse Spark moves the stress to the right word each time and explains why. Novel and news profiles show how the format adapts: in news, the people quoted carry emotion while the reporter's narration stays neutral, and political or war stories are refused. A live playground lets anyone paste their own text and watch each engine step (reading, validating, repairing) end in a clear success or error notice, and a short first-visit guide teaches readers the notation. For developers, the format is an open JSON schema and the renderer is a single script tag that works on any website.
 

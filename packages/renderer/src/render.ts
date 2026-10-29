@@ -54,7 +54,7 @@ function textSpan(doc: Document, piece: TextPiece, tooltips: boolean): HTMLEleme
   return s;
 }
 
-/** Switches between Off (plain text), Subtle (stress + pause) and Full. */
+/** Switches between plain text ("off") and Mabarint notation ("full"). */
 export function setIntensity(el: HTMLElement, intensity: Intensity): void {
   el.dataset.mbrIntensity = intensity;
 }

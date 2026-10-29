@@ -19,15 +19,14 @@ export function useIntensity() {
 }
 
 const MODES: Array<{ id: Intensity; label: string; hint: string }> = [
-  { id: "off", label: "Off", hint: "Plain text" },
-  { id: "subtle", label: "Subtle", hint: "Stress and pauses" },
-  { id: "full", label: "Full", hint: "All notation" },
+  { id: "off", label: "Plain", hint: "The original plain text" },
+  { id: "full", label: "Mabarint", hint: "Plain text with Mabarint notation" },
 ];
 
 export function IntensityToggle() {
   const { intensity, set } = useIntensity();
   return (
-    <div className="segmented" role="group" aria-label="Notation intensity">
+    <div className="segmented" role="group" aria-label="Reading mode">
       {MODES.map((m) => (
         <button key={m.id} type="button" aria-pressed={intensity === m.id} title={m.hint} onClick={() => set(m.id)}>
           {m.label}
@@ -74,7 +73,7 @@ export function Legend() {
             <Annotated as="span" className="legend-sample" text={item.sample} spans={item.spans} intensity="full" />
             <span className="small">
               <strong>{item.label}</strong>{" "}
-              <span className="muted">{item.description}{item.mode === "subtle" ? " (Subtle and Full)" : ""}</span>
+              <span className="muted">{item.description}</span>
             </span>
           </div>
         ))}

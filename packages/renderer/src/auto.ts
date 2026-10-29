@@ -13,7 +13,7 @@ export interface AutoInitOptions {
  *
  *   <div data-mabarint="novel">Plain text…</div>                 → calls the engine endpoint
  *   <div data-mabarint data-mabarint-src="/demo.json">…</div>     → uses precomputed JSON
- *   data-mabarint-intensity="off|subtle|full"   data-mabarint-controls   (adds an Off/Subtle/Full toggle)
+ *   data-mabarint-intensity="off|full"   data-mabarint-controls   (adds a Plain / Mabarint toggle)
  */
 export async function autoInit(options: AutoInitOptions = {}): Promise<void> {
   const root = options.root ?? document;
@@ -57,10 +57,11 @@ function controls(target: HTMLElement, initial: Intensity): HTMLElement {
   bar.setAttribute("role", "group");
   bar.setAttribute("aria-label", "Mabarint notation");
   bar.style.cssText = "display:inline-flex;gap:4px;margin:0 0 8px;font:13px system-ui,sans-serif";
-  const buttons = (["off", "subtle", "full"] as Intensity[]).map((mode) => {
+  const modes: Array<[Intensity, string]> = [["off", "Plain"], ["full", "Mabarint"]];
+  const buttons = modes.map(([mode, label]) => {
     const b = document.createElement("button");
     b.type = "button";
-    b.textContent = mode[0].toUpperCase() + mode.slice(1);
+    b.textContent = label;
     b.setAttribute("aria-pressed", String(mode === initial));
     b.style.cssText = "padding:4px 10px;border:1px solid currentColor;border-radius:999px;background:none;color:inherit;cursor:pointer";
     b.onclick = () => {

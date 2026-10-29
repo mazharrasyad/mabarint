@@ -23,7 +23,7 @@ Progress events (`segment`, `model`, `validate`, `repair`, `merge`, `done`) are 
 
 ## Renderer (`packages/renderer`)
 
-`layout(text, spans)` is a pure function. It cuts the text at every span boundary, so each run carries the classes of all the spans that cover it. Overlapping spans never need nested or crossing elements. Pause and pitch marks are inserted as `aria-hidden` glyph elements. `render()` writes the runs into the DOM. CSS switches by `data-mbr-intensity`: Off shows plain text, Subtle shows stress and pauses, Full shows everything.
+`layout(text, spans)` is a pure function. It cuts the text at every span boundary, so each run carries the classes of all the spans that cover it. Overlapping spans never need nested or crossing elements. Pause and pitch marks are inserted as `aria-hidden` glyph elements. `render()` writes the runs into the DOM. CSS switches by `data-mbr-intensity`: `off` shows the plain text (Plain), `full` shows all notation (Mabarint).
 
 ## Demo site (`apps/web`)
 

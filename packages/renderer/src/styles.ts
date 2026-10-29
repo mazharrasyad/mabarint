@@ -1,6 +1,7 @@
 import type { Emotion } from "@mabarint/types";
 
-export type Intensity = "off" | "subtle" | "full";
+/** "off" shows the plain text, "full" shows Mabarint notation. */
+export type Intensity = "off" | "full";
 
 /** Underline colours per emotion. Sarcasm is dashed so it never relies on colour alone. */
 export const EMOTION_COLORS: Record<Exclude<Emotion, "neutral">, { light: string; dark: string }> = {
@@ -14,7 +15,6 @@ export const EMOTION_COLORS: Record<Exclude<Emotion, "neutral">, { light: string
 };
 
 const on = (modes: Intensity[]) => `.mbr:is(${modes.map((m) => `[data-mbr-intensity="${m}"]`).join(",")})`;
-const SUBTLE = on(["subtle", "full"]);
 const FULL = on(["full"]);
 
 const emotionVars = (mode: "light" | "dark") =>
@@ -33,15 +33,14 @@ export const CSS = `
   font-weight: 700; font-style: normal; letter-spacing: 0; word-spacing: 0; text-decoration: none; user-select: none;
 }
 
-/* Subtle and Full: stress + pause */
-${SUBTLE} .mbr-stress-1 { font-weight: 560; }
-${SUBTLE} .mbr-stress-2 { font-weight: 680; }
-${SUBTLE} .mbr-stress-3 { font-weight: 800; }
-${SUBTLE} .mbr-pause { display: inline; }
+/* Mabarint mode: every dimension */
+${FULL} .mbr-stress-1 { font-weight: 560; }
+${FULL} .mbr-stress-2 { font-weight: 680; }
+${FULL} .mbr-stress-3 { font-weight: 800; }
+${FULL} .mbr-pause { display: inline; }
 .mbr-pause-short { margin: 0 0.14em; font-size: 1.15em; }
 .mbr-pause-long { margin: 0 0.3em; }
 
-/* Full: every dimension */
 ${FULL} .mbr-elong-1 { letter-spacing: 0.08em; }
 ${FULL} .mbr-elong-2 { letter-spacing: 0.15em; }
 ${FULL} .mbr-elong-3 { letter-spacing: 0.25em; }
