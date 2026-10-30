@@ -91,5 +91,4 @@ Tom kissed her cheek. "I brought your favourite cake."
 - [ ] Durasi ≤ 3:00. Kalau kelebihan, potong langkah 5 di segmen Playground (Docs Developers) terlebih dahulu.
 - [ ] Hanya fitur yang dibuat selama lomba yang muncul di video.
 - [ ] Upload ke YouTube (unlisted) atau Loom, lalu buka link-nya di jendela incognito untuk memastikan bisa diputar.
-- [ ] Isi link video di README (`(add link)`) dan di form submission.
-- [ ] Potong klip 20–30 detik dari segmen "One sentence" untuk post di X (lihat [x-post.md](x-post.md)).
+- [x] Video diunggah: https://youtu.be/K5aPK77hgPM (README sudah diisi; tinggal tempel di form submission).

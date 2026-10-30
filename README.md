@@ -5,7 +5,7 @@
 Mabarint is a new reading format. It uses Meta's **Muse Spark** to read the context of plain text and add subtle, *tajwid-like* notation for intonation and emotion (stress, pauses, elongation, pitch, tempo, volume and emotion), so any digital text platform (novels, news, stories, scripts) can show readers **how** a passage should be read. Authors keep writing plain text and never touch the notation.
 
 - **Live demo:** https://mazharrasyad.tech/mabarint (open to everyone, including the live playground)
-- **Demo video:** _add link_
+- **Demo video:** https://youtu.be/K5aPK77hgPM
 - Built during the Meta Global AI Developer Hackathon, Oct 27 to Nov 4, 2026.
 
 ---
@@ -173,11 +173,6 @@ Indie Developer
 Build for Your World
 ```
 
-### X post link (Most Viral Track)
-```text
-(add after posting the demo)
-```
-
 ### Project Description
 ```text
 Plain text loses the voice. "I didn't say she stole it" means six different things depending on the stressed word, yet on a screen every reading looks the same. Authors only have bold and italics, and readers (especially language learners and people reading aloud) have to guess tone, sarcasm and emotion.
@@ -196,7 +191,7 @@ https://github.com/mazharrasyad/mabarint
 
 ### 3-Minute Demo Video
 ```text
-(add link)
+https://youtu.be/K5aPK77hgPM
 ```
 
 ### Describe your use of Meta products to build the submitted project
