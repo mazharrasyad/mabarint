@@ -8,3 +8,7 @@ dist/
 apps/web/public/mabarint.js
 *.tsbuildinfo
 next-env.d.ts
+
+# Demo video tooling (own node_modules, generated media)
+tools/demo-video/node_modules/
+tools/demo-video/out/

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "s1-hook",
+    "text": "Read this sentence: \"I didn't say she stole it.\" How should it sound? Lean on a different word, and it means something completely different. Six meanings, and on a screen they all look exactly the same. Plain text loses the voice: the tone, the sarcasm, the pause before the bad news."
+  },
+  {
+    "id": "s2-meanings",
+    "text": "This is Mabarint. We give Meta's Muse Spark the same sentence six times, each with a different story before it. Every time, Muse Spark moves the stress to the right word: I. Didn't. Say. She. Stole. It. And it explains why. Here: corrects who was accused, not Lena. The words never change. Only the reading marks do."
+  },
+  {
+    "id": "s3-novel",
+    "text": "Authors keep writing plain text. Mabarint adds reading marks, a little like tajweed in the Quran. One switch moves between Plain and Mabarint: stress, pauses, emotion, pitch, tempo and volume. Muse Spark reads the cues a human narrator would: the dialogue tag, said Alice angrily, and the March Hare echoing her words back at her. So civil gets the stress, and her line gets a red anger underline. Hover any mark, and you read Muse Spark's reason, written for the reader."
+  },
+  {
+    "id": "s4-news",
+    "text": "News works differently. The people quoted carry emotion, like the librarian who honestly cried, but the reporter's own words stay neutral. The same engine carries joy in one story, and grief in the next, without ever dramatizing the facts."
+  },
+  {
+    "id": "s5-playground",
+    "text": "Anyone can try it. Paste any text: no settings, no sign-up. Muse Spark first works out that this is a story, not news or a speech, then reads it like a narrator. Behind these friendly steps, our engine double-checks every mark against the exact text and the reading rules, and sends mistakes back to Muse Spark to fix. Every reading is saved here, with the time and the text. For developers, it's an open format, and one script tag."
+  },
+  {
+    "id": "s6-close",
+    "text": "Muse Spark is the brain: deep reading of who speaks, what they mean, and how they feel, returned as reliable structured data. We built Mabarint with Claude Code, which Meta's Model API also supports directly. It's for readers, language learners, and anyone reading aloud. Authors write plain text. Readers hear the voice."
+  }
+]
